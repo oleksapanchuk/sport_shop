@@ -2,7 +2,7 @@ package dev.oleksa.sportshop.model.order;
 
 import dev.oleksa.sportshop.model.payment.PaymentMethod;
 import dev.oleksa.sportshop.model.product.ProductItem;
-import dev.oleksa.sportshop.model.user.UserAccount;
+import dev.oleksa.sportshop.model.user.UserEntity;
 import dev.oleksa.sportshop.model.user.address.Address;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -31,7 +31,7 @@ public class UserOrder {
     @ManyToOne
     @JoinColumn(name = "user_id")
     @NotNull
-    private UserAccount user;
+    private UserEntity user;
 
     private LocalDateTime createdAt;
 

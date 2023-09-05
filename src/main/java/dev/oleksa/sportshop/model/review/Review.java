@@ -1,7 +1,7 @@
 package dev.oleksa.sportshop.model.review;
 
 import dev.oleksa.sportshop.model.product.ProductItem;
-import dev.oleksa.sportshop.model.user.UserAccount;
+import dev.oleksa.sportshop.model.user.UserEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -26,7 +26,7 @@ public class Review {
     @ManyToOne
     @JoinColumn(name = "user_id")
     @NotNull
-    private UserAccount user;
+    private UserEntity user;
 
     private Integer ratingValue;
 

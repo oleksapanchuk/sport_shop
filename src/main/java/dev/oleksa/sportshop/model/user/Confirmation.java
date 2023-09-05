@@ -24,7 +24,7 @@ public class Confirmation {
     @ManyToOne
     @JoinColumn(name = "user_id")
     @NotNull
-    private UserAccount user;
+    private UserEntity user;
     private String token;
     private LocalDateTime createdDate;
 }

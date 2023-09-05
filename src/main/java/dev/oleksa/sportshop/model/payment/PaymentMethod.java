@@ -1,6 +1,6 @@
 package dev.oleksa.sportshop.model.payment;
 
-import dev.oleksa.sportshop.model.user.UserAccount;
+import dev.oleksa.sportshop.model.user.UserEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -24,7 +24,7 @@ public class PaymentMethod {
     @ManyToOne
     @JoinColumn(name = "user_id")
     @NotNull
-    private UserAccount user;
+    private UserEntity user;
     @NotNull
     @Column(length = 100)
     private String provider;

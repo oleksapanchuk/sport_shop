@@ -3,11 +3,9 @@ package dev.oleksa.sportshop.model.user;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.security.core.GrantedAuthority;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 import static javax.persistence.GenerationType.AUTO;
@@ -16,6 +14,7 @@ import static javax.persistence.GenerationType.AUTO;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "roles")
 public class Role {
     @Id
     @GeneratedValue(strategy = AUTO)
@@ -23,10 +22,6 @@ public class Role {
 
     @Column(length = 20)
     @NotNull
-    private String nameUa;
-
-    @Column(length = 20)
-    @NotNull
-    private String nameEng;
+    private String name;
 
 }
