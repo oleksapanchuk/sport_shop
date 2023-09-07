@@ -36,15 +36,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     ) throws ServletException, IOException {
 
         final String authHeader = request.getHeader(AUTHORIZATION_HEADER);
-        final String jwt;
+
         if (authHeader == null || !authHeader.startsWith(BEARER)) {
             filterChain.doFilter(request, response);
             log.info("Authorization header is empty or it has not bearer token");
             return;
         }
 
-        jwt = authHeader.substring(BEARER.length());
-
+        final String jwt = authHeader.substring(BEARER.length());
         final String userEmail = jwtService.extractEmail(jwt);
 
         // if we have user email and user is not authenticated
@@ -74,8 +73,5 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
             filterChain.doFilter(request, response);
         }
-
-
-
     }
 }
