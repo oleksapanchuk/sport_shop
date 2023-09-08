@@ -31,7 +31,6 @@ public class AuthenticationController {
             @RequestBody AuthenticationRequest request
     ) {
         return ResponseEntity.ok(service.authenticate(request));
-
     }
 
     @GetMapping("/refresh")

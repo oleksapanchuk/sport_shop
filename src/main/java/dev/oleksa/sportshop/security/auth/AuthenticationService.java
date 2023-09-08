@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -54,6 +55,8 @@ public class AuthenticationService {
                 .dateOfBirth(new Date()) // todo
                 .password(passwordEncoder.encode(request.getPassword()))
                 .roles(List.of(roleRepository.findByName(PREFIX_ROLE + ROLE_CUSTOMER)))
+                .createdAt(LocalDateTime.now())
+                .modifiedAt(LocalDateTime.now())
                 .build();
         repository.save(user);
         var jwt = jwtService.generateToken(user);
