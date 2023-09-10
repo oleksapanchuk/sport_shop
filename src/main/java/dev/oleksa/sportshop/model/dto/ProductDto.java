@@ -10,6 +10,7 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @Data
 public class ProductDto {
+    private Long id;
     private Long categoryId;
     private Long discountId;
     private Long brandId;

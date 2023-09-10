@@ -8,7 +8,7 @@ import dev.oleksa.sportshop.model.user.address.Address;
 import java.util.List;
 
 public interface UserService {
-    UserEntity getUserById(Long id);
+    UserDto getUserById(Long id);
     UserEntity getUserByEmail(String email);
 
     UserEntity createUser(UserDto user);

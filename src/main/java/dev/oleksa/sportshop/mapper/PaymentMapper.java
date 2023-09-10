@@ -18,9 +18,8 @@ import java.util.Objects;
 @Slf4j
 public class PaymentMapper {
 
-    private final UserRepository userRepository;
-
     private final ModelMapper mapper;
+    private final UserRepository userRepository;
 
     public PaymentMethod toEntity(PaymentDto dto) {
         return Objects.isNull(dto) ? null : mapper.map(dto, PaymentMethod.class);

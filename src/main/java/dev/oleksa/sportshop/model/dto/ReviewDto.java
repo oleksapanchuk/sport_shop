@@ -10,8 +10,9 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @Data
 public class ReviewDto {
-    private String comment;
-    private Integer ratingValue;
-    private Long productItemId;
+    private Long id;
     private Long userId;
+    private Integer ratingValue;
+    private String comment;
+    private Long productItemId;
 }

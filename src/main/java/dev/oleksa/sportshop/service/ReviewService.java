@@ -5,11 +5,11 @@ import dev.oleksa.sportshop.model.review.Review;
 
 
 public interface ReviewService {
-    Review createReview(ReviewDto review);
+    ReviewDto createReview(ReviewDto reviewDto);
 
-    Review readReview(Long reviewId);
+    ReviewDto readReview(Long reviewId);
 
-    Review updateReview(ReviewDto newReview, Long oldReviewId);
+    ReviewDto updateReview(ReviewDto reviewDto);
 
-    void deleteReview(Long reviewId);
+    Boolean deleteReview(Long reviewId);
 }

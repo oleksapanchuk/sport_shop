@@ -10,6 +10,7 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @Data
 public class CategoryDto {
+    private Long id;
     private Long parentCategoryId;
     private String nameUa;
     private String nameEng;

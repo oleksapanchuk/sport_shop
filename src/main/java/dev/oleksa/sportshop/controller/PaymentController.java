@@ -1,7 +1,6 @@
 package dev.oleksa.sportshop.controller;
 
 import dev.oleksa.sportshop.model.dto.PaymentDto;
-import dev.oleksa.sportshop.model.payment.PaymentMethod;
 import dev.oleksa.sportshop.service.PaymentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

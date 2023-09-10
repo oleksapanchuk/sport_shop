@@ -1,5 +1,6 @@
 package dev.oleksa.sportshop.service.impl;
 
+import dev.oleksa.sportshop.mapper.UserMapper;
 import dev.oleksa.sportshop.model.dto.UserDto;
 import dev.oleksa.sportshop.model.user.Role;
 import dev.oleksa.sportshop.model.user.UserEntity;
@@ -30,6 +31,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     private final UserRepository repository;
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
+    private final UserMapper userMapper;
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
@@ -49,8 +51,11 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public UserEntity getUserById(Long id) {
-        return repository.findById(id).orElseThrow();
+    public UserDto getUserById(Long id) {
+        return userMapper.toDto(
+                repository.findById(id)
+                        .orElseThrow()
+        );
     }
 
     @Override
@@ -66,7 +71,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
                 .firstName(user.getFirstName())
                 .lastName(user.getLastName())
                 .email(user.getEmail())
-                .roles(List.of(roleRepository.findByName(user.getRoleName())))
+                .roles(List.of(roleRepository.findById(user.getRoleIds().get(0)).orElseThrow())) // todo
                 .phone(user.getPhone())
                 .dateOfBirth(user.getDateOfBirth())
                 .build()

@@ -10,6 +10,7 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @Data
 public class DiscountDto {
+    private Long id;
     private String nameUa;
     private String nameEng;
     private String descriptionUa;
