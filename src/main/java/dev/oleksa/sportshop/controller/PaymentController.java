@@ -18,19 +18,19 @@ public class PaymentController {
     private final PaymentService paymentService;
 
     @GetMapping("/{paymentId}")
-    public ResponseEntity<PaymentMethod> getPaymentById(@PathVariable Long paymentId) {
+    public ResponseEntity<PaymentDto> getPaymentById(@PathVariable Long paymentId) {
         return ResponseEntity.ok(paymentService.readPayment(paymentId));
     }
 
     @PostMapping("/save")
-    public ResponseEntity<PaymentMethod> savePayment(@RequestBody PaymentDto payment) {
+    public ResponseEntity<PaymentDto> savePayment(@RequestBody PaymentDto payment) {
         URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path("/sport-shop/user/payment/save").toUriString());
         return ResponseEntity.created(uri).body(paymentService.createPayment(payment));
     }
 
     @PutMapping("/update/{paymentId}")
-    public ResponseEntity<PaymentMethod> updatePayment(
+    public ResponseEntity<PaymentDto> updatePayment(
             @PathVariable Long paymentId,
             @RequestBody PaymentDto payment)
     {

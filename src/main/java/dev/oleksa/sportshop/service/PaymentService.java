@@ -4,8 +4,8 @@ import dev.oleksa.sportshop.model.dto.PaymentDto;
 import dev.oleksa.sportshop.model.payment.PaymentMethod;
 
 public interface PaymentService {
-    PaymentMethod createPayment(PaymentDto payment);
-    PaymentMethod readPayment(Long id);
-    PaymentMethod updatePayment(PaymentDto payment, Long id);
+    PaymentDto createPayment(PaymentDto payment);
+    PaymentDto readPayment(Long id);
+    PaymentDto updatePayment(PaymentDto payment, Long id);
     Boolean deletePayment(Long id);
 }

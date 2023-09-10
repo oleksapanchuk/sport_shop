@@ -9,11 +9,9 @@ import lombok.experimental.SuperBuilder;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class PaymentDto {
-    private Long paymentId;
-    private Long userId;
-    private String accountNumber;
-    private String expiryDate;
-    private String provider;
-    private Boolean isDefault;
+public class CategoryDto {
+    private Long parentCategoryId;
+    private String nameUa;
+    private String nameEng;
+    private String imageUrl;
 }
