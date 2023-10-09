@@ -1,5 +1,6 @@
 package dev.oleksa.sportshop.model.user.address;
 
+import dev.oleksa.sportshop.model.user.UserEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -20,24 +21,39 @@ public class Address {
     @GeneratedValue(strategy = AUTO)
     @Column(name = "id")
     private Long id;
+
     @NotNull
-    @Column(length = 10)
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private UserEntity user;
+
+    @NotNull
+    @Column(name = "unit_number", nullable = false, length = 7)
     private String unitNumber;
+
     @NotNull
-    @Column(length = 10)
+    @Column(name = "street_number", nullable = false, length = 7)
     private String streetNumber;
+
     @NotNull
-    @Column(length = 150)
-    private String address;
+    @Column(name = "address_line", nullable = false, length = 200)
+    private String addressLine;
+
     @NotNull
-    @Column(length = 100)
+    @Column(name = "city", nullable = false, length = 50)
     private String city;
+
+    @NotNull
     @ManyToOne
     @JoinColumn(name = "region_id")
-    @NotNull
     private Region region;
+
     @NotNull
-    @Column(length = 10)
+    @Column(name = "postal_code", nullable = false, length = 10)
     private String postalCode;
+
+    @NotNull
+    @Column(name = "is_default", nullable = false)
+    private Boolean isDefault = false;
 
 }

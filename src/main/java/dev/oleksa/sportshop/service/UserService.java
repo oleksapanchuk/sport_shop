@@ -1,6 +1,6 @@
 package dev.oleksa.sportshop.service;
 
-import dev.oleksa.sportshop.model.dto.UserDto;
+import dev.oleksa.sportshop.dto.UserDto;
 import dev.oleksa.sportshop.model.user.Role;
 import dev.oleksa.sportshop.model.user.UserEntity;
 import dev.oleksa.sportshop.model.user.address.Address;

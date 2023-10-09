@@ -1,6 +1,6 @@
 package dev.oleksa.sportshop.service;
 
-import dev.oleksa.sportshop.model.dto.OrderDto;
+import dev.oleksa.sportshop.dto.OrderDto;
 
 public interface OrderService {
     OrderDto createOrder(OrderDto orderDto);

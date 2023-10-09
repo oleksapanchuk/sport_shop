@@ -1,6 +1,6 @@
 package dev.oleksa.sportshop.service;
 
-import dev.oleksa.sportshop.model.dto.CategoryDto;
+import dev.oleksa.sportshop.dto.CategoryDto;
 
 public interface CategoryService {
     CategoryDto createCategory(CategoryDto categoryDto);

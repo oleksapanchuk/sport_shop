@@ -1,7 +1,7 @@
 package dev.oleksa.sportshop.service.impl;
 
 import dev.oleksa.sportshop.mapper.ReviewMapper;
-import dev.oleksa.sportshop.model.dto.ReviewDto;
+import dev.oleksa.sportshop.dto.ReviewDto;
 import dev.oleksa.sportshop.repository.ReviewRepository;
 import dev.oleksa.sportshop.service.ReviewService;
 import lombok.RequiredArgsConstructor;

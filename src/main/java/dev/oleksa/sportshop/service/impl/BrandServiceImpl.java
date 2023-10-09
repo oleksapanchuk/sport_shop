@@ -1,7 +1,7 @@
 package dev.oleksa.sportshop.service.impl;
 
 import dev.oleksa.sportshop.mapper.BrandMapper;
-import dev.oleksa.sportshop.model.dto.BrandDto;
+import dev.oleksa.sportshop.dto.BrandDto;
 import dev.oleksa.sportshop.repository.BrandRepository;
 import dev.oleksa.sportshop.service.BrandService;
 import lombok.RequiredArgsConstructor;

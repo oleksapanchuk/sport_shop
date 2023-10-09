@@ -19,20 +19,27 @@ import static javax.persistence.GenerationType.AUTO;
 public class PaymentMethod {
     @Id
     @GeneratedValue(strategy = AUTO)
-    @Column(name = "id")
+    @Column(name = "id", nullable = false)
     private Long id;
+
+    @NotNull
     @ManyToOne
-    @JoinColumn(name = "user_id")
-    @NotNull
+    @JoinColumn(name = "user_id", nullable = false)
     private UserEntity user;
+
     @NotNull
-    @Column(length = 100)
-    private String provider;
-    @NotNull
-    @Column(length = 16)
+    @Column(name = "account_number", nullable = false, length = 16)
     private String accountNumber;
+
     @NotNull
-    @Column(length = 5)
+    @Column(name = "provider", nullable = false, length = 70)
+    private String provider;
+
+    @NotNull
+    @Column(name = "expiry_date", nullable = false, length = 5)
     private String expiryDate;
+
+    @NotNull
+    @Column(name = "is_default", nullable = false)
     private Boolean isDefault = false;
 }

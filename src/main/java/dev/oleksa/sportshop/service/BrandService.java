@@ -1,6 +1,6 @@
 package dev.oleksa.sportshop.service;
 
-import dev.oleksa.sportshop.model.dto.BrandDto;
+import dev.oleksa.sportshop.dto.BrandDto;
 
 public interface BrandService {
     BrandDto createBrand(BrandDto brand);

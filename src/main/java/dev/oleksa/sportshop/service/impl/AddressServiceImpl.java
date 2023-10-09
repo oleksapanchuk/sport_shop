@@ -1,7 +1,7 @@
 package dev.oleksa.sportshop.service.impl;
 
 import dev.oleksa.sportshop.mapper.AddressMapper;
-import dev.oleksa.sportshop.model.dto.AddressDto;
+import dev.oleksa.sportshop.dto.AddressDto;
 import dev.oleksa.sportshop.repository.AddressRepository;
 import dev.oleksa.sportshop.service.AddressService;
 import lombok.RequiredArgsConstructor;

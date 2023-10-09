@@ -1,9 +1,9 @@
 package dev.oleksa.sportshop.mapper;
 
+import dev.oleksa.sportshop.dto.ReviewDto;
 import dev.oleksa.sportshop.exception.NotFoundException;
-import dev.oleksa.sportshop.model.dto.ReviewDto;
 import dev.oleksa.sportshop.model.review.Review;
-import dev.oleksa.sportshop.repository.ProductItemRepository;
+import dev.oleksa.sportshop.repository.ProductRepository;
 import dev.oleksa.sportshop.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,7 +21,7 @@ public class ReviewMapper {
 
     private final ModelMapper mapper;
     private final UserRepository userRepository;
-    private final ProductItemRepository productItemRepository;
+    private final ProductRepository productRepository;
 
     public Review toEntity(ReviewDto dto) {
         return Objects.isNull(dto) ? null : mapper.map(dto, Review.class);
@@ -35,7 +35,7 @@ public class ReviewMapper {
     public void setupMapper() {
         mapper.createTypeMap(Review.class, ReviewDto.class)
                 .addMappings(m -> m.skip(ReviewDto::setUserId)).setPostConverter(toDtoConverter())
-                .addMappings(m -> m.skip(ReviewDto::setProductItemId)).setPostConverter(toDtoConverter())
+                .addMappings(m -> m.skip(ReviewDto::setProductId)).setPostConverter(toDtoConverter())
         ;
         mapper.createTypeMap(ReviewDto.class, Review.class)
                 .addMappings(m -> m.skip(Review::setUser)).setPostConverter(toEntityConverter())
@@ -72,7 +72,7 @@ public class ReviewMapper {
             destination.setProduct(
                     Objects.isNull(source) || Objects.isNull(source.getUserId())
                             ? null
-                            : productItemRepository.findById(source.getProductItemId())
+                            : productRepository.findById(source.getProductId())
                             .orElseThrow(() -> new NotFoundException("Product Item not found"))
             );
         } catch (NotFoundException e) {
@@ -86,7 +86,7 @@ public class ReviewMapper {
                         ? null
                         : source.getUser().getId()
         );
-        destination.setProductItemId(
+        destination.setProductId(
                 Objects.isNull(source) || Objects.isNull(source.getId())
                         ? null
                         : source.getProduct().getId()

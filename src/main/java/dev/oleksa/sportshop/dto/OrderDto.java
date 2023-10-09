@@ -1,4 +1,4 @@
-package dev.oleksa.sportshop.model.dto;
+package dev.oleksa.sportshop.dto;
 
 import dev.oleksa.sportshop.model.order.ShippingMethod;
 import lombok.AllArgsConstructor;

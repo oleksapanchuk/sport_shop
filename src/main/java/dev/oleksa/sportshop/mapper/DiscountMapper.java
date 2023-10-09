@@ -1,6 +1,6 @@
 package dev.oleksa.sportshop.mapper;
 
-import dev.oleksa.sportshop.model.dto.DiscountDto;
+import dev.oleksa.sportshop.dto.DiscountDto;
 import dev.oleksa.sportshop.model.product.Discount;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

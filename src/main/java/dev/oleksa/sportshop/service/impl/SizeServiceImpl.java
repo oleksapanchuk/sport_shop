@@ -1,7 +1,7 @@
 package dev.oleksa.sportshop.service.impl;
 
 import dev.oleksa.sportshop.mapper.SizeMapper;
-import dev.oleksa.sportshop.model.dto.SizeDto;
+import dev.oleksa.sportshop.dto.SizeDto;
 import dev.oleksa.sportshop.repository.SizeRepository;
 import dev.oleksa.sportshop.service.SizeService;
 import lombok.RequiredArgsConstructor;

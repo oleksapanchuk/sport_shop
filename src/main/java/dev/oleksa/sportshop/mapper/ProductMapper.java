@@ -1,7 +1,7 @@
 package dev.oleksa.sportshop.mapper;
 
+import dev.oleksa.sportshop.dto.ProductDto;
 import dev.oleksa.sportshop.exception.NotFoundException;
-import dev.oleksa.sportshop.model.dto.ProductDto;
 import dev.oleksa.sportshop.model.product.Product;
 import dev.oleksa.sportshop.repository.BrandRepository;
 import dev.oleksa.sportshop.repository.CategoryRepository;
@@ -41,7 +41,6 @@ public class ProductMapper {
                 .addMappings(m -> m.skip(ProductDto::setBrandId)).setPostConverter(toDtoConverter())
         ;
         mapper.createTypeMap(ProductDto.class, Product.class)
-                .addMappings(m -> m.skip(Product::setDiscount)).setPostConverter(toEntityConverter())
                 .addMappings(m -> m.skip(Product::setCategory)).setPostConverter(toEntityConverter())
                 .addMappings(m -> m.skip(Product::setBrand)).setPostConverter(toEntityConverter())
         ;
@@ -73,12 +72,7 @@ public class ProductMapper {
                             : categoryRepository.findById(source.getCategoryId())
                             .orElseThrow(() -> new NotFoundException("Category not found"))
             );
-            destination.setDiscount(
-                    Objects.isNull(source) || Objects.isNull(source.getDiscountId())
-                            ? null
-                            : discountRepository.findById(source.getDiscountId())
-                            .orElseThrow(() -> new NotFoundException("Discount not found"))
-            );
+
             destination.setBrand(
                     Objects.isNull(source) || Objects.isNull(source.getBrandId())
                             ? null
@@ -96,11 +90,7 @@ public class ProductMapper {
                         ? null
                         : source.getCategory().getId()
         );
-        destination.setDiscountId(
-                Objects.isNull(source) || Objects.isNull(source.getId())
-                        ? null
-                        : source.getDiscount().getId()
-        );
+
         destination.setBrandId(
                 Objects.isNull(source) || Objects.isNull(source.getId())
                         ? null

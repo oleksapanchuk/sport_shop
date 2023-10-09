@@ -1,4 +1,4 @@
-package dev.oleksa.sportshop.model.dto;
+package dev.oleksa.sportshop.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,10 +9,7 @@ import lombok.experimental.SuperBuilder;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class ReviewDto {
+public class SizeDto {
     private Long id;
-    private Long userId;
-    private Integer ratingValue;
-    private String comment;
-    private Long productItemId;
+    private String size;
 }

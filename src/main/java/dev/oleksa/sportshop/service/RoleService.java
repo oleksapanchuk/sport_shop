@@ -1,6 +1,6 @@
 package dev.oleksa.sportshop.service;
 
-import dev.oleksa.sportshop.model.dto.RoleDto;
+import dev.oleksa.sportshop.dto.RoleDto;
 
 public interface RoleService {
     RoleDto createRole(RoleDto roleDto);

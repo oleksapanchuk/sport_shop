@@ -1,6 +1,6 @@
 package dev.oleksa.sportshop.controller;
 
-import dev.oleksa.sportshop.model.dto.BrandDto;
+import dev.oleksa.sportshop.dto.BrandDto;
 import dev.oleksa.sportshop.service.BrandService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

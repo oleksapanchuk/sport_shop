@@ -1,6 +1,6 @@
 package dev.oleksa.sportshop.service;
 
-import dev.oleksa.sportshop.model.dto.SizeDto;
+import dev.oleksa.sportshop.dto.SizeDto;
 
 public interface SizeService {
     SizeDto createSize(SizeDto sizeDto);

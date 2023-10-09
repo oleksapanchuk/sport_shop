@@ -1,7 +1,7 @@
 package dev.oleksa.sportshop.service.impl;
 
 import dev.oleksa.sportshop.mapper.UserMapper;
-import dev.oleksa.sportshop.model.dto.UserDto;
+import dev.oleksa.sportshop.dto.UserDto;
 import dev.oleksa.sportshop.model.user.Role;
 import dev.oleksa.sportshop.model.user.UserEntity;
 import dev.oleksa.sportshop.model.user.address.Address;

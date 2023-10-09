@@ -26,10 +26,10 @@ public class Region {
     private Long id;
 
     @NotNull
-    @Column(length = 50)
+    @Column(name = "name_ua", nullable = false, length = 50)
     private String nameUa;
 
     @NotNull
-    @Column(length = 50)
+    @Column(name = "name_eng", nullable = false, length = 50)
     private String nameEng;
 }

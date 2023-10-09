@@ -1,7 +1,7 @@
 package dev.oleksa.sportshop.mapper;
 
 import dev.oleksa.sportshop.exception.NotFoundException;
-import dev.oleksa.sportshop.model.dto.CategoryDto;
+import dev.oleksa.sportshop.dto.CategoryDto;
 import dev.oleksa.sportshop.model.product.Category;
 import dev.oleksa.sportshop.repository.CategoryRepository;
 import lombok.RequiredArgsConstructor;

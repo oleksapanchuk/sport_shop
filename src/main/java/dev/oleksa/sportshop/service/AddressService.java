@@ -1,6 +1,6 @@
 package dev.oleksa.sportshop.service;
 
-import dev.oleksa.sportshop.model.dto.AddressDto;
+import dev.oleksa.sportshop.dto.AddressDto;
 
 public interface AddressService {
     AddressDto createAddress(AddressDto addressDto);

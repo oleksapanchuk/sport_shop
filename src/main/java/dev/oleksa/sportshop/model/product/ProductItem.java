@@ -18,36 +18,34 @@ import static javax.persistence.GenerationType.AUTO;
 public class ProductItem {
     @Id
     @GeneratedValue(strategy = AUTO)
-    @Column(name = "id")
+    @Column(name = "id", nullable = false)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "product_id")
     @NotNull
+    @ManyToOne
+    @JoinColumn(name = "product_id", nullable = false)
     private Product product;
 
-    @ManyToOne
-    @JoinColumn(name = "size_id")
     @NotNull
+    @ManyToOne
+    @JoinColumn(name = "size_id", nullable = false)
     private ProductSize size;
 
-    @ManyToOne
-    @JoinColumn(name = "color_id")
     @NotNull
+    @ManyToOne
+    @JoinColumn(name = "color_id", nullable = false)
     private ProductColor color;
 
-    @Column(length = 100)
     @NotNull
+    @Column(name = "sku", nullable = false)
     private String sku;
 
     @NotNull
-    private Integer quantity_in_stock;
+    @Column(name = "quantity_in_stock", nullable = false)
+    private Integer quantityInStock;
 
-    @Column(length = 500)
     @NotNull
+    @Column(name = "image_url", nullable = false, length = 1000)
     private String imageUrl;
-
-    @NotNull
-    private Integer price;
 
 }

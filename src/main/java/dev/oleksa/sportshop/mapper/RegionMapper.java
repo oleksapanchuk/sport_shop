@@ -1,6 +1,6 @@
 package dev.oleksa.sportshop.mapper;
 
-import dev.oleksa.sportshop.model.dto.RegionDto;
+import dev.oleksa.sportshop.dto.RegionDto;
 import dev.oleksa.sportshop.model.user.address.Region;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

@@ -1,4 +1,4 @@
-package dev.oleksa.sportshop.model.dto;
+package dev.oleksa.sportshop.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,7 +9,8 @@ import lombok.experimental.SuperBuilder;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class ColorDto {
+public class OrderStatusDto {
     private Long id;
-    private String color;
+    private String nameUa;
+    private String nameEng;
 }

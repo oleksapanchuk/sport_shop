@@ -1,7 +1,7 @@
 package dev.oleksa.sportshop.mapper;
 
 import dev.oleksa.sportshop.exception.NotFoundException;
-import dev.oleksa.sportshop.model.dto.UserDto;
+import dev.oleksa.sportshop.dto.UserDto;
 import dev.oleksa.sportshop.model.user.Role;
 import dev.oleksa.sportshop.model.user.UserEntity;
 import dev.oleksa.sportshop.model.user.address.Address;
@@ -41,7 +41,7 @@ public class UserMapper {
         ;
         mapper.createTypeMap(UserDto.class, UserEntity.class)
                 .addMappings(m -> m.skip(UserEntity::setRoles)).setPostConverter(toEntityConverter())
-                .addMappings(m -> m.skip(UserEntity::setAddresses)).setPostConverter(toEntityConverter())
+//                .addMappings(m -> m.skip(UserEntity::setAddresses)).setPostConverter(toEntityConverter())
         ;
     }
 
@@ -70,11 +70,11 @@ public class UserMapper {
                             ? null
                             : getRoles(source.getRoleIds())
             );
-            destination.setAddresses(
-                    Objects.isNull(source) || Objects.isNull(source.getAddressIds())
-                            ? null
-                            : getAddress(source.getAddressIds())
-            );
+//            destination.setAddresses(
+//                    Objects.isNull(source) || Objects.isNull(source.getAddressIds())
+//                            ? null
+//                            : getAddress(source.getAddressIds())
+//            );
         } catch (NotFoundException e) {
             throw new RuntimeException(e);
         }
@@ -86,11 +86,11 @@ public class UserMapper {
                         ? null
                         : getRoleIds(source.getRoles())
         );
-        destination.setAddressIds(
-                Objects.isNull(source) || Objects.isNull(source.getAddresses())
-                        ? null
-                        : getAddressIds(source.getAddresses())
-        );
+//        destination.setAddressIds(
+//                Objects.isNull(source) || Objects.isNull(source.getAddresses())
+//                        ? null
+//                        : getAddressIds(source.getAddresses())
+//        );
     }
 
     private List<Role> getRoles(List<Long> roleIds) throws NotFoundException {

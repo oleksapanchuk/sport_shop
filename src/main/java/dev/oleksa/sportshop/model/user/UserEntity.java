@@ -16,7 +16,9 @@ import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
 
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_DEFAULT;
 import static javax.persistence.GenerationType.AUTO;
@@ -31,43 +33,70 @@ import static javax.persistence.GenerationType.AUTO;
 public class UserEntity implements UserDetails {
     @Id
     @GeneratedValue(strategy = AUTO)
-    @Column(name = "id")
+    @Column(name = "id", nullable = false)
     private Long id;
+
     @NotNull(message = "First name cannot be empty")
+    @Column(name = "first_name", nullable = false, length = 100)
     private String firstName;
+
     @NotNull(message = "Last name cannot be empty")
+    @Column(name = "last_name", nullable = false, length = 100)
     private String lastName;
-    @Column(unique = true)
+
     @NotNull(message = "Email cannot be empty")
     @Email(message = "Invalid email. Please enter a valid email address")
+    @Column(name = "email", unique = true, nullable = false, length = 300)
     private String email;
+
     @NotNull(message = "Password cannot be empty")
+    @Column(name = "password", nullable = false, length = 1000)
     private String password;
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+
+    @NotNull
+    @Column(name = "phone", nullable = false, length = 20)
+    private String phone;
+
+    @NotNull
+    @OneToOne
+    @JoinColumn(name = "gender_id", nullable = false)
+    private Gender gender;
+
+    @NotNull
+    @Column(name = "date_of_birth", nullable = false)
+    private Date dateOfBirth;
+
+    @Column(name = "image_url")
+    private String imageUrl;
+
+    // Has the user confirmed their email?
+    @Column(name = "is_confirmed", nullable = false)
+    private Boolean isConfirmed = false;
+
+    // Is the user blocked?
+    @Column(name = "is_blocked", nullable = false)
+    private Boolean isBlocked = false;
+
+    // Is the user subscribed to the email newsletter?
+    @Column(name = "is_subscribed", nullable = false)
+    private Boolean isSubscribed = false;
+
+    @CreatedDate
+    private LocalDateTime createdAt;
+
+    @LastModifiedDate
+    private LocalDateTime modifiedAt;
+
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinTable(
-            name = "user_roles",
+            name = "user_has_roles",
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id")
     )
     private Collection<Role> roles = new ArrayList<>();
-    @NotNull
-    private String phone;
-    @NotNull
-    private Date dateOfBirth;
-    @Column(columnDefinition = "boolean default false")
-    private Boolean isConfirmed = false;
-    private String imageUrl = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSJxA5cTf-5dh5Eusm0puHbvAhOrCRPtckzjA&usqp=CAU";
-    @ManyToMany
-    @JoinTable(
-            name = "user_address",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "address_id")
-    )
-    private Set<Address> addresses = new HashSet<>();
-    @CreatedDate
-    private LocalDateTime createdAt;
-    @LastModifiedDate
-    private LocalDateTime modifiedAt;
+
+    @OneToMany(mappedBy = "user")
+    private Collection<Address> addresses = new ArrayList<>();
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

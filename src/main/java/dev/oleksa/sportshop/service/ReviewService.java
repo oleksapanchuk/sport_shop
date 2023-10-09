@@ -1,7 +1,6 @@
 package dev.oleksa.sportshop.service;
 
-import dev.oleksa.sportshop.model.dto.ReviewDto;
-import dev.oleksa.sportshop.model.review.Review;
+import dev.oleksa.sportshop.dto.ReviewDto;
 
 
 public interface ReviewService {

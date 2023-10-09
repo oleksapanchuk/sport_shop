@@ -1,4 +1,4 @@
-package dev.oleksa.sportshop.model.dto;
+package dev.oleksa.sportshop.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,8 +9,7 @@ import lombok.experimental.SuperBuilder;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class RegionDto {
+public class RoleDto {
     private Long id;
-    private String nameUa;
-    private String nameEng;
+    private String name;
 }

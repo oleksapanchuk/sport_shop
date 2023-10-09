@@ -1,7 +1,7 @@
 package dev.oleksa.sportshop.service.impl;
 
 import dev.oleksa.sportshop.mapper.ShippingMethodMapper;
-import dev.oleksa.sportshop.model.dto.ShippingMethodDto;
+import dev.oleksa.sportshop.dto.ShippingMethodDto;
 import dev.oleksa.sportshop.repository.ShippingMethodRepository;
 import dev.oleksa.sportshop.service.ShippingMethodService;
 import lombok.RequiredArgsConstructor;

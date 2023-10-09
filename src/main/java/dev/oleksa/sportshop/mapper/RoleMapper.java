@@ -1,6 +1,6 @@
 package dev.oleksa.sportshop.mapper;
 
-import dev.oleksa.sportshop.model.dto.RoleDto;
+import dev.oleksa.sportshop.dto.RoleDto;
 import dev.oleksa.sportshop.model.user.Role;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

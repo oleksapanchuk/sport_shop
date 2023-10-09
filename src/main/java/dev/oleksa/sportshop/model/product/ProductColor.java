@@ -21,8 +21,14 @@ import static javax.persistence.GenerationType.AUTO;
 public class ProductColor {
     @Id
     @GeneratedValue(strategy = AUTO)
-    @Column(name = "id")
+    @Column(name = "id", nullable = false)
     private Long id;
+
     @NotNull
-    private String color;
+    @Column(name = "name_ua", nullable = false)
+    private String nameUa;
+
+    @NotNull
+    @Column(name = "name_eng", nullable = false)
+    private String nameEng;
 }

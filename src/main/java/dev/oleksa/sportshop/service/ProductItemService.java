@@ -1,6 +1,6 @@
 package dev.oleksa.sportshop.service;
 
-import dev.oleksa.sportshop.model.dto.ProductItemDto;
+import dev.oleksa.sportshop.dto.ProductItemDto;
 
 public interface ProductItemService {
     ProductItemDto createProductItem(ProductItemDto productItemDto);

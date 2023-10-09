@@ -5,10 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 import static javax.persistence.GenerationType.AUTO;
@@ -21,8 +18,15 @@ import static javax.persistence.GenerationType.AUTO;
 public class ProductSize {
     @Id
     @GeneratedValue(strategy = AUTO)
-    @Column(name = "id")
+    @Column(name = "id", nullable = false)
     private Long id;
+
     @NotNull
+    @ManyToOne
+    @JoinColumn(name = "size_type_id", nullable = false)
+    private ProductSizeType productSizeType;
+
+    @NotNull
+    @Column(name = "size", nullable = false, length = 10)
     private String size;
 }

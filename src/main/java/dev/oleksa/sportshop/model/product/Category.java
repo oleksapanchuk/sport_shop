@@ -18,21 +18,22 @@ import static javax.persistence.GenerationType.AUTO;
 public class Category {
     @Id
     @GeneratedValue(strategy = AUTO)
-    @Column(name = "id")
+    @Column(name = "id", nullable = false)
     private Long id;
 
     @ManyToOne
     @JoinColumn(name = "parent_category_id")
-    @NotNull
     private Category category;
 
     @NotNull
+    @Column(name = "name_ua", nullable = false, length = 100)
     private String nameUa;
 
     @NotNull
+    @Column(name = "name_eng", nullable = false, length = 100)
     private String nameEng;
 
-    @Column(length = 300)
     @NotNull
+    @Column(name = "image_url", nullable = false, length = 1000)
     private String imageUrl;
 }

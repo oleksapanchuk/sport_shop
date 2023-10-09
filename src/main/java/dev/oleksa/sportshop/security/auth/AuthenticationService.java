@@ -5,6 +5,7 @@ import dev.oleksa.sportshop.model.user.UserEntity;
 import dev.oleksa.sportshop.repository.RoleRepository;
 import dev.oleksa.sportshop.repository.UserRepository;
 import dev.oleksa.sportshop.security.JwtService;
+import dev.oleksa.sportshop.service.GenderService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.AccessDeniedException;
@@ -45,15 +46,20 @@ public class AuthenticationService {
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
     private final UserDetailsService userDetailsService;
+    private final GenderService genderService;
 
     public AuthenticationResponse register(RegisterRequest request) {
         var user = UserEntity.builder()
                 .firstName(request.getFirstName())
                 .lastName(request.getLastName())
                 .email(request.getEmail())
-                .phone(request.getPhone())
-                .dateOfBirth(new Date()) // todo
                 .password(passwordEncoder.encode(request.getPassword()))
+                .phone(request.getPhone())
+                .gender(genderService.read(request.getGender()))
+                .dateOfBirth(new Date()) // todo
+                .isConfirmed(false)
+                .isBlocked(false)
+                .isSubscribed(false)
                 .roles(List.of(roleRepository.findByName(PREFIX_ROLE + ROLE_CUSTOMER)))
                 .createdAt(LocalDateTime.now())
                 .modifiedAt(LocalDateTime.now())

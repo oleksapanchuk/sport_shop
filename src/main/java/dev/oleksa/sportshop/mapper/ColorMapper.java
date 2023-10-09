@@ -1,6 +1,6 @@
 package dev.oleksa.sportshop.mapper;
 
-import dev.oleksa.sportshop.model.dto.ColorDto;
+import dev.oleksa.sportshop.dto.ColorDto;
 import dev.oleksa.sportshop.model.product.ProductColor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

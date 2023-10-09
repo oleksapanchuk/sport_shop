@@ -10,6 +10,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
+import java.math.BigDecimal;
 
 import static javax.persistence.GenerationType.AUTO;
 
@@ -21,17 +22,19 @@ import static javax.persistence.GenerationType.AUTO;
 public class ShippingMethod {
     @Id
     @GeneratedValue(strategy = AUTO)
-    @Column(name = "id")
+    @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(length = 100)
     @NotNull
-    private String methodNameUa;
-
-    @Column(length = 100)
-    @NotNull
-    private String methodNameEng;
+    @Column(name = "name_ua", nullable = false, length = 50)
+    private String nameUa;
 
     @NotNull
-    private Integer price;
+    @Column(name = "name_eng", nullable = false, length = 50)
+    private String nameEng;
+
+    @NotNull
+    @Column(name = "price", nullable = false, precision = 10, scale = 2)
+    private BigDecimal price;
+
 }

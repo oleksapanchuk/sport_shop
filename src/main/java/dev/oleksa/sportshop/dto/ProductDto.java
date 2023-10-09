@@ -1,4 +1,4 @@
-package dev.oleksa.sportshop.model.dto;
+package dev.oleksa.sportshop.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,11 +9,14 @@ import lombok.experimental.SuperBuilder;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class DiscountDto {
+public class ProductDto {
     private Long id;
+    private Long categoryId;
+    private Long discountId;
+    private Long brandId;
     private String nameUa;
     private String nameEng;
     private String descriptionUa;
     private String descriptionEng;
-    private Integer discountPercent;
+    private String imageUrl;
 }

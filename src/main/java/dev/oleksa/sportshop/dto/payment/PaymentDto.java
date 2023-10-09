@@ -1,4 +1,4 @@
-package dev.oleksa.sportshop.model.dto;
+package dev.oleksa.sportshop.dto.payment;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

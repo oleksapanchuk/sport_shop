@@ -1,4 +1,4 @@
-package dev.oleksa.sportshop.model.order;
+package dev.oleksa.sportshop.model.product;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -17,19 +17,14 @@ import static javax.persistence.GenerationType.AUTO;
 @NoArgsConstructor
 @AllArgsConstructor
 @SuperBuilder
-@Entity
-public class OrderStatus {
+@Entity(name = "size_type")
+public class ProductSizeType {
     @Id
     @GeneratedValue(strategy = AUTO)
     @Column(name = "id", nullable = false)
     private Long id;
 
     @NotNull
-    @Column(name = "name_ua", nullable = false, length = 45)
-    private String nameUa;
-
-    @NotNull
-    @Column(name = "name_eng", nullable = false, length = 45)
-    private String nameEng;
-
+    @Column(name = "name", nullable = false, length = 100)
+    private String name;
 }

@@ -1,8 +1,8 @@
 package dev.oleksa.sportshop.mapper;
 
 import dev.oleksa.sportshop.exception.NotFoundException;
-import dev.oleksa.sportshop.model.dto.OrderDto;
-import dev.oleksa.sportshop.model.order.UserOrder;
+import dev.oleksa.sportshop.dto.OrderDto;
+import dev.oleksa.sportshop.model.order.Order;
 import dev.oleksa.sportshop.model.product.ProductItem;
 import dev.oleksa.sportshop.repository.*;
 import lombok.RequiredArgsConstructor;
@@ -29,17 +29,17 @@ public class OrderMapper {
     private final OrderStatusRepository orderStatusRepository;
     private final ProductItemRepository productItemRepository;
 
-    public UserOrder toEntity(OrderDto dto) {
-        return Objects.isNull(dto) ? null : mapper.map(dto, UserOrder.class);
+    public Order toEntity(OrderDto dto) {
+        return Objects.isNull(dto) ? null : mapper.map(dto, Order.class);
     }
 
-    public OrderDto toDto(UserOrder entity) {
+    public OrderDto toDto(Order entity) {
         return Objects.isNull(entity) ? null : mapper.map(entity, OrderDto.class);
     }
 
     @PostConstruct
     public void setupMapper() {
-        mapper.createTypeMap(UserOrder.class, OrderDto.class)
+        mapper.createTypeMap(Order.class, OrderDto.class)
                 .addMappings(m -> m.skip(OrderDto::setUserId)).setPostConverter(toDtoConverter())
                 .addMappings(m -> m.skip(OrderDto::setPaymentMethodId)).setPostConverter(toDtoConverter())
                 .addMappings(m -> m.skip(OrderDto::setShippingAddressId)).setPostConverter(toDtoConverter())
@@ -47,35 +47,34 @@ public class OrderMapper {
                 .addMappings(m -> m.skip(OrderDto::setOrderStatusId)).setPostConverter(toDtoConverter())
                 .addMappings(m -> m.skip(OrderDto::setProductIds)).setPostConverter(toDtoConverter())
         ;
-        mapper.createTypeMap(OrderDto.class, UserOrder.class)
-                .addMappings(m -> m.skip(UserOrder::setUser)).setPostConverter(toEntityConverter())
-                .addMappings(m -> m.skip(UserOrder::setPaymentMethod)).setPostConverter(toEntityConverter())
-                .addMappings(m -> m.skip(UserOrder::setShippingAddress)).setPostConverter(toEntityConverter())
-                .addMappings(m -> m.skip(UserOrder::setShippingMethod)).setPostConverter(toEntityConverter())
-                .addMappings(m -> m.skip(UserOrder::setOrderStatus)).setPostConverter(toEntityConverter())
-                .addMappings(m -> m.skip(UserOrder::setProducts)).setPostConverter(toEntityConverter())
+        mapper.createTypeMap(OrderDto.class, Order.class)
+                .addMappings(m -> m.skip(Order::setUser)).setPostConverter(toEntityConverter())
+                .addMappings(m -> m.skip(Order::setPaymentMethod)).setPostConverter(toEntityConverter())
+                .addMappings(m -> m.skip(Order::setShippingAddress)).setPostConverter(toEntityConverter())
+                .addMappings(m -> m.skip(Order::setShippingMethod)).setPostConverter(toEntityConverter())
+                .addMappings(m -> m.skip(Order::setOrderStatus)).setPostConverter(toEntityConverter())
         ;
     }
 
-    public Converter<UserOrder, OrderDto> toDtoConverter() {
+    public Converter<Order, OrderDto> toDtoConverter() {
         return context -> {
-            UserOrder source = context.getSource();
+            Order source = context.getSource();
             OrderDto destination = context.getDestination();
             mapSpecificFields(source, destination);
             return context.getDestination();
         };
     }
 
-    public Converter<OrderDto, UserOrder> toEntityConverter() {
+    public Converter<OrderDto, Order> toEntityConverter() {
         return context -> {
             OrderDto source = context.getSource();
-            UserOrder destination = context.getDestination();
+            Order destination = context.getDestination();
             mapSpecificFields(source, destination);
             return context.getDestination();
         };
     }
 
-    public void mapSpecificFields(OrderDto source, UserOrder destination) {
+    public void mapSpecificFields(OrderDto source, Order destination) {
         try {
             destination.setUser(
                     Objects.isNull(source) || Objects.isNull(source.getUserId())
@@ -107,17 +106,12 @@ public class OrderMapper {
                             : orderStatusRepository.findById(source.getOrderStatusId())
                             .orElseThrow(() -> new NotFoundException("Order Status not found"))
             );
-            destination.setProducts(
-                    Objects.isNull(source) || Objects.isNull(source.getProductIds())
-                            ? null
-                            : getProductItems(source.getProductIds())
-            );
         } catch (NotFoundException e) {
             throw new RuntimeException(e);
         }
     }
 
-    public void mapSpecificFields(UserOrder source, OrderDto destination) {
+    public void mapSpecificFields(Order source, OrderDto destination) {
         destination.setUserId(
                 Objects.isNull(source) || Objects.isNull(source.getId())
                         ? null
@@ -142,11 +136,6 @@ public class OrderMapper {
                 Objects.isNull(source) || Objects.isNull(source.getId())
                         ? null
                         : source.getOrderStatus().getId()
-        );
-        destination.setProductIds(
-                Objects.isNull(source) || Objects.isNull(source.getId())
-                        ? null
-                        : getProductIds(source.getProducts())
         );
     }
 

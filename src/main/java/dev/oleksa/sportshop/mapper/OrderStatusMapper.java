@@ -1,6 +1,6 @@
 package dev.oleksa.sportshop.mapper;
 
-import dev.oleksa.sportshop.model.dto.OrderStatusDto;
+import dev.oleksa.sportshop.dto.OrderStatusDto;
 import dev.oleksa.sportshop.model.order.OrderStatus;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

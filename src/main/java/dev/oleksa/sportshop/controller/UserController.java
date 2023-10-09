@@ -1,6 +1,6 @@
 package dev.oleksa.sportshop.controller;
 
-import dev.oleksa.sportshop.model.dto.UserDto;
+import dev.oleksa.sportshop.dto.UserDto;
 import dev.oleksa.sportshop.model.user.UserEntity;
 import dev.oleksa.sportshop.service.UserService;
 import lombok.RequiredArgsConstructor;

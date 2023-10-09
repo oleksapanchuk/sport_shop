@@ -1,4 +1,4 @@
-package dev.oleksa.sportshop.model.dto;
+package dev.oleksa.sportshop.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,8 +9,8 @@ import lombok.experimental.SuperBuilder;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class OrderStatusDto {
+public class ConfirmationDto {
     private Long id;
-    private String statusNameUa;
-    private String statusNameEng;
+    private Long userId;
+    private String token;
 }

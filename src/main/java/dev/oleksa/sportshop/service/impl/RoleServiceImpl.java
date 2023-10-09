@@ -1,7 +1,7 @@
 package dev.oleksa.sportshop.service.impl;
 
 import dev.oleksa.sportshop.mapper.RoleMapper;
-import dev.oleksa.sportshop.model.dto.RoleDto;
+import dev.oleksa.sportshop.dto.RoleDto;
 import dev.oleksa.sportshop.repository.RoleRepository;
 import dev.oleksa.sportshop.service.RoleService;
 import lombok.RequiredArgsConstructor;

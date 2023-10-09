@@ -7,24 +7,26 @@ import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.time.LocalDateTime;
 
 import static javax.persistence.GenerationType.AUTO;
 
 @Data
+@SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-@SuperBuilder
 @Entity
-public class Confirmation {
+@Table(name = "gender")
+public class Gender {
     @Id
     @GeneratedValue(strategy = AUTO)
-    @Column(name = "id")
+    @Column(name = "id", nullable = false)
     private Long id;
-    @ManyToOne
-    @JoinColumn(name = "user_id")
+
     @NotNull
-    private UserEntity user;
-    private String token;
-    private LocalDateTime createdDate;
+    @Column(name = "name_ua", nullable = false, length = 10)
+    private String nameUa;
+
+    @NotNull
+    @Column(name = "name_eng", nullable = false, length = 10)
+    private String nameEng;
 }

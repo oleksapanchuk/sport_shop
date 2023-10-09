@@ -1,7 +1,7 @@
 package dev.oleksa.sportshop.service.impl;
 
 import dev.oleksa.sportshop.mapper.RegionMapper;
-import dev.oleksa.sportshop.model.dto.RegionDto;
+import dev.oleksa.sportshop.dto.RegionDto;
 import dev.oleksa.sportshop.repository.RegionRepository;
 import dev.oleksa.sportshop.service.RegionService;
 import lombok.RequiredArgsConstructor;

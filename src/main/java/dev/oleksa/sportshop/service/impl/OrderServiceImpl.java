@@ -1,7 +1,7 @@
 package dev.oleksa.sportshop.service.impl;
 
 import dev.oleksa.sportshop.mapper.OrderMapper;
-import dev.oleksa.sportshop.model.dto.OrderDto;
+import dev.oleksa.sportshop.dto.OrderDto;
 import dev.oleksa.sportshop.repository.OrderRepository;
 import dev.oleksa.sportshop.service.OrderService;
 import lombok.RequiredArgsConstructor;

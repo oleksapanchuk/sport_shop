@@ -6,7 +6,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
-import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -19,7 +18,8 @@ import static javax.persistence.GenerationType.AUTO;
 @AllArgsConstructor
 @SuperBuilder
 @Entity
-public class Review {
+@Table(name = "likes")
+public class Like {
     @Id
     @GeneratedValue(strategy = AUTO)
     @Column(name = "id", nullable = false)
@@ -36,15 +36,7 @@ public class Review {
     private Product product;
 
     @NotNull
-    @Column(name = "comment", nullable = false, length = 750)
-    private String comment;
-
-    @NotNull
-    @Column(name = "rating_value", nullable = false)
-    private Integer ratingValue;
-
-    @NotNull
-    @CreatedDate
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
+
 }

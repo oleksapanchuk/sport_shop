@@ -1,7 +1,7 @@
 package dev.oleksa.sportshop.service.impl;
 
 import dev.oleksa.sportshop.mapper.ColorMapper;
-import dev.oleksa.sportshop.model.dto.ColorDto;
+import dev.oleksa.sportshop.dto.ColorDto;
 import dev.oleksa.sportshop.repository.ColorRepository;
 import dev.oleksa.sportshop.service.ColorService;
 import lombok.RequiredArgsConstructor;

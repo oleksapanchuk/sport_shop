@@ -1,7 +1,7 @@
 package dev.oleksa.sportshop.service.impl;
 
 import dev.oleksa.sportshop.mapper.DiscountMapper;
-import dev.oleksa.sportshop.model.dto.DiscountDto;
+import dev.oleksa.sportshop.dto.DiscountDto;
 import dev.oleksa.sportshop.repository.DiscountRepository;
 import dev.oleksa.sportshop.service.DiscountService;
 import lombok.RequiredArgsConstructor;

@@ -1,6 +1,6 @@
 package dev.oleksa.sportshop.service;
 
-import dev.oleksa.sportshop.model.dto.ShippingMethodDto;
+import dev.oleksa.sportshop.dto.ShippingMethodDto;
 
 public interface ShippingMethodService {
     ShippingMethodDto createShippingMethod(ShippingMethodDto shippingMethodDto);

@@ -1,7 +1,7 @@
 package dev.oleksa.sportshop.mapper;
 
 import dev.oleksa.sportshop.exception.NotFoundException;
-import dev.oleksa.sportshop.model.dto.AddressDto;
+import dev.oleksa.sportshop.dto.AddressDto;
 import dev.oleksa.sportshop.model.user.address.Address;
 import dev.oleksa.sportshop.repository.RegionRepository;
 import lombok.RequiredArgsConstructor;

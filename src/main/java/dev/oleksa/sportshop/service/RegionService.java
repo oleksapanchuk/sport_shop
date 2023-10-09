@@ -1,6 +1,6 @@
 package dev.oleksa.sportshop.service;
 
-import dev.oleksa.sportshop.model.dto.RegionDto;
+import dev.oleksa.sportshop.dto.RegionDto;
 
 public interface RegionService {
     RegionDto createRegion(RegionDto regionDto);

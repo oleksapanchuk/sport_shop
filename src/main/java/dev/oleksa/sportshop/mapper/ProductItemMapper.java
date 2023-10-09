@@ -1,7 +1,7 @@
 package dev.oleksa.sportshop.mapper;
 
 import dev.oleksa.sportshop.exception.NotFoundException;
-import dev.oleksa.sportshop.model.dto.ProductItemDto;
+import dev.oleksa.sportshop.dto.ProductItemDto;
 import dev.oleksa.sportshop.model.product.ProductItem;
 import dev.oleksa.sportshop.repository.ColorRepository;
 import dev.oleksa.sportshop.repository.ProductRepository;

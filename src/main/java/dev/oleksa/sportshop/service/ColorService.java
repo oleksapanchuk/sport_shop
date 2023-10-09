@@ -1,6 +1,6 @@
 package dev.oleksa.sportshop.service;
 
-import dev.oleksa.sportshop.model.dto.ColorDto;
+import dev.oleksa.sportshop.dto.ColorDto;
 
 public interface ColorService {
     ColorDto createColor(ColorDto colorDto);

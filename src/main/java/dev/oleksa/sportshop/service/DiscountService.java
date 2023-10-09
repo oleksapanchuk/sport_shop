@@ -1,6 +1,6 @@
 package dev.oleksa.sportshop.service;
 
-import dev.oleksa.sportshop.model.dto.DiscountDto;
+import dev.oleksa.sportshop.dto.DiscountDto;
 
 public interface DiscountService {
     DiscountDto createDiscount(DiscountDto discountDto);

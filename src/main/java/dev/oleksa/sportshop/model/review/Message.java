@@ -1,12 +1,10 @@
 package dev.oleksa.sportshop.model.review;
 
-import dev.oleksa.sportshop.model.product.Product;
 import dev.oleksa.sportshop.model.user.UserEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
-import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -19,7 +17,7 @@ import static javax.persistence.GenerationType.AUTO;
 @AllArgsConstructor
 @SuperBuilder
 @Entity
-public class Review {
+public class Message {
     @Id
     @GeneratedValue(strategy = AUTO)
     @Column(name = "id", nullable = false)
@@ -27,24 +25,19 @@ public class Review {
 
     @NotNull
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    private UserEntity user;
+    @JoinColumn(name = "from_user_id", nullable = false)
+    private UserEntity fromUser;
 
     @NotNull
     @ManyToOne
-    @JoinColumn(name = "product_id", nullable = false)
-    private Product product;
+    @JoinColumn(name = "to_user_id", nullable = false)
+    private UserEntity toUser;
 
     @NotNull
-    @Column(name = "comment", nullable = false, length = 750)
-    private String comment;
+    @Column(name = "message", nullable = false, length = 1500)
+    private String message;
 
     @NotNull
-    @Column(name = "rating_value", nullable = false)
-    private Integer ratingValue;
-
-    @NotNull
-    @CreatedDate
-    @Column(name = "created_at", nullable = false)
-    private LocalDateTime createdAt;
+    @Column(name = "send_time", nullable = false)
+    private LocalDateTime sendTime;
 }

@@ -1,6 +1,6 @@
 package dev.oleksa.sportshop.mapper;
 
-import dev.oleksa.sportshop.model.dto.ShippingMethodDto;
+import dev.oleksa.sportshop.dto.ShippingMethodDto;
 import dev.oleksa.sportshop.model.order.ShippingMethod;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

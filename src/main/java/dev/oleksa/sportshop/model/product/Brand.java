@@ -21,14 +21,19 @@ import static javax.persistence.GenerationType.AUTO;
 public class Brand {
     @Id
     @GeneratedValue(strategy = AUTO)
-    @Column(name = "id")
+    @Column(name = "id", nullable = false)
     private Long id;
 
     @NotNull
+    @Column(name = "name", nullable = false, length = 200)
     private String name;
 
-    @Column(length = 300)
     @NotNull
+    @Column(name = "official_site_url", nullable = false, length = 500)
+    private String officialSiteUrl;
+
+    @NotNull
+    @Column(name = "logo_image_url", nullable = false, length = 1000)
     private String logoImageUrl;
 }
 
