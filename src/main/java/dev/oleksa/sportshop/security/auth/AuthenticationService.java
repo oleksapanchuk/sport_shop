@@ -1,11 +1,14 @@
 package dev.oleksa.sportshop.security.auth;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import dev.oleksa.sportshop.model.user.Gender;
+import dev.oleksa.sportshop.model.user.Role;
 import dev.oleksa.sportshop.model.user.UserEntity;
+import dev.oleksa.sportshop.repository.GenderRepository;
 import dev.oleksa.sportshop.repository.RoleRepository;
 import dev.oleksa.sportshop.repository.UserRepository;
 import dev.oleksa.sportshop.security.JwtService;
-import dev.oleksa.sportshop.service.GenderService;
+import dev.oleksa.sportshop.utils.DataUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.AccessDeniedException;
@@ -19,8 +22,8 @@ import org.springframework.stereotype.Service;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.text.ParseException;
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,10 +36,11 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @Slf4j
 public class AuthenticationService {
 
-    public static final String PREFIX_ROLE = "ROLE_";
-    public static final String ROLE_CUSTOMER = "CUSTOMER";
-    public static final String ROLE_MANAGER = "MANAGER";
-    public static final String ROLE_ADMIN = "ADMIN";
+    public static final String ROLE_CUSTOMER = "ROLE_CUSTOMER";
+    /*
+        public static final String ROLE_MANAGER = "ROLE_MANAGER";
+        public static final String ROLE_ADMIN = "ROLE_ADMIN";
+    */
     public static final String BEARER = "Bearer ";
     public static final String AUTHORIZATION_HEADER = "Authorization";
 
@@ -46,24 +50,44 @@ public class AuthenticationService {
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
     private final UserDetailsService userDetailsService;
-    private final GenderService genderService;
+    private final GenderRepository genderRepository;
 
     public AuthenticationResponse register(RegisterRequest request) {
-        var user = UserEntity.builder()
-                .firstName(request.getFirstName())
-                .lastName(request.getLastName())
-                .email(request.getEmail())
-                .password(passwordEncoder.encode(request.getPassword()))
-                .phone(request.getPhone())
-                .gender(genderService.read(request.getGender()))
-                .dateOfBirth(new Date()) // todo
-                .isConfirmed(false)
-                .isBlocked(false)
-                .isSubscribed(false)
-                .roles(List.of(roleRepository.findByName(PREFIX_ROLE + ROLE_CUSTOMER)))
-                .createdAt(LocalDateTime.now())
-                .modifiedAt(LocalDateTime.now())
-                .build();
+
+        UserEntity user;
+
+        String password = passwordEncoder.encode(request.getPassword());
+        log.info("Password encoded");
+
+        List<Role> roles = List.of(
+                roleRepository.findByName(ROLE_CUSTOMER)
+        );
+
+        Gender gender = genderRepository.findById(request.getGenderId())
+                .orElseThrow();
+
+        try {
+            user = UserEntity.builder()
+                    .firstName(request.getFirstName())
+                    .lastName(request.getLastName())
+                    .email(request.getEmail())
+                    .password(password)
+                    .roles(roles)
+                    .phone(request.getPhone())
+                    .gender(gender)
+                    .dateOfBirth(DataUtils.getDate(request.getDateOfBirth()))
+                    .isConfirmed(false)
+                    .isBlocked(false)
+                    .isSubscribed(false)
+                    .createdAt(LocalDateTime.now())
+                    .modifiedAt(LocalDateTime.now())
+                    .build();
+        } catch (ParseException e) {
+            return AuthenticationResponse.builder()
+                    .error(e.getMessage())
+                    .build();
+        }
+
         repository.save(user);
         var jwt = jwtService.generateToken(user);
         return AuthenticationResponse.builder()

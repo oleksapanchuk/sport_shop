@@ -1,7 +1,7 @@
 package dev.oleksa.sportshop.mapper;
 
 import dev.oleksa.sportshop.exception.NotFoundException;
-import dev.oleksa.sportshop.dto.payment.PaymentDto;
+import dev.oleksa.sportshop.dto.PaymentDto;
 import dev.oleksa.sportshop.model.payment.PaymentMethod;
 import dev.oleksa.sportshop.repository.UserRepository;
 import lombok.RequiredArgsConstructor;

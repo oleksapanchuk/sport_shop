@@ -1,7 +1,7 @@
 package dev.oleksa.sportshop.service.impl;
 
 import dev.oleksa.sportshop.mapper.PaymentMapper;
-import dev.oleksa.sportshop.dto.payment.PaymentDto;
+import dev.oleksa.sportshop.dto.PaymentDto;
 import dev.oleksa.sportshop.model.payment.PaymentMethod;
 import dev.oleksa.sportshop.repository.PaymentRepository;
 import dev.oleksa.sportshop.service.PaymentService;

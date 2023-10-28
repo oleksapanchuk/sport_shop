@@ -10,7 +10,7 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @Data
 public class BrandDto {
-    private Long id;
     private String name;
+    private String officialSiteUrl;
     private String logoImageUrl;
 }

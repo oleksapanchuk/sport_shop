@@ -1,12 +1,8 @@
 package dev.oleksa.sportshop.mapper;
 
-import dev.oleksa.sportshop.exception.NotFoundException;
 import dev.oleksa.sportshop.dto.UserDto;
-import dev.oleksa.sportshop.model.user.Role;
 import dev.oleksa.sportshop.model.user.UserEntity;
-import dev.oleksa.sportshop.model.user.address.Address;
-import dev.oleksa.sportshop.repository.AddressRepository;
-import dev.oleksa.sportshop.repository.RoleRepository;
+import dev.oleksa.sportshop.repository.GenderRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.Converter;
@@ -14,7 +10,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
-import java.util.*;
+import java.util.Objects;
 
 @Component
 @RequiredArgsConstructor
@@ -22,8 +18,7 @@ import java.util.*;
 public class UserMapper {
 
     private final ModelMapper mapper;
-    private final RoleRepository roleRepository;
-    private final AddressRepository addressRepository;
+    private final GenderRepository genderRepository;
 
     public UserEntity toEntity(UserDto dto) {
         return Objects.isNull(dto) ? null : mapper.map(dto, UserEntity.class);
@@ -36,12 +31,10 @@ public class UserMapper {
     @PostConstruct
     public void setupMapper() {
         mapper.createTypeMap(UserEntity.class, UserDto.class)
-                .addMappings(m -> m.skip(UserDto::setRoleIds)).setPostConverter(toDtoConverter())
-                .addMappings(m -> m.skip(UserDto::setAddressIds)).setPostConverter(toDtoConverter())
+                .addMappings(m -> m.skip(UserDto::setGenderId)).setPostConverter(toDtoConverter())
         ;
         mapper.createTypeMap(UserDto.class, UserEntity.class)
-                .addMappings(m -> m.skip(UserEntity::setRoles)).setPostConverter(toEntityConverter())
-//                .addMappings(m -> m.skip(UserEntity::setAddresses)).setPostConverter(toEntityConverter())
+                .addMappings(m -> m.skip(UserEntity::setGender)).setPostConverter(toEntityConverter())
         ;
     }
 
@@ -64,66 +57,19 @@ public class UserMapper {
     }
 
     public void mapSpecificFields(UserDto source, UserEntity destination) {
-        try {
-            destination.setRoles(
-                    Objects.isNull(source) || Objects.isNull(source.getRoleIds())
-                            ? null
-                            : getRoles(source.getRoleIds())
-            );
-//            destination.setAddresses(
-//                    Objects.isNull(source) || Objects.isNull(source.getAddressIds())
-//                            ? null
-//                            : getAddress(source.getAddressIds())
-//            );
-        } catch (NotFoundException e) {
-            throw new RuntimeException(e);
-        }
+        destination.setGender(
+                Objects.isNull(source) || Objects.isNull(source.getGenderId())
+                        ? null
+                        : genderRepository.findById(source.getGenderId()).orElseThrow()
+        );
     }
 
     public void mapSpecificFields(UserEntity source, UserDto destination) {
-        destination.setRoleIds(
-                Objects.isNull(source) || Objects.isNull(source.getRoles())
+        destination.setGenderId(
+                Objects.isNull(source) || Objects.isNull(source.getGender())
                         ? null
-                        : getRoleIds(source.getRoles())
+                        : source.getGender().getId()
         );
-//        destination.setAddressIds(
-//                Objects.isNull(source) || Objects.isNull(source.getAddresses())
-//                        ? null
-//                        : getAddressIds(source.getAddresses())
-//        );
     }
 
-    private List<Role> getRoles(List<Long> roleIds) throws NotFoundException {
-        List<Role> roles = new ArrayList<>();
-        for (Long id : roleIds) {
-            roles.add(roleRepository.findById(id)
-                    .orElseThrow(() -> new NotFoundException("Role not found")));
-        }
-        return roles;
-    }
-
-    private Set<Address> getAddress(Set<Long> addressIds) throws NotFoundException {
-        Set<Address> addresses = new HashSet<>();
-        for (Long id : addressIds) {
-            addresses.add(addressRepository.findById(id)
-                    .orElseThrow(() -> new NotFoundException("Address not found")));
-        }
-        return addresses;
-    }
-
-    private List<Long> getRoleIds(Collection<Role> roles) {
-        List<Long> ids = new ArrayList<>();
-        for (Role item : roles) {
-            ids.add(item.getId());
-        }
-        return ids;
-    }
-
-    private Set<Long> getAddressIds(Set<Address> addresses) {
-        Set<Long> ids = new HashSet<>();
-        for (Address item : addresses) {
-            ids.add(item.getId());
-        }
-        return ids;
-    }
 }

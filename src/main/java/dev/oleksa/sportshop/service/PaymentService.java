@@ -1,6 +1,6 @@
 package dev.oleksa.sportshop.service;
 
-import dev.oleksa.sportshop.dto.payment.PaymentDto;
+import dev.oleksa.sportshop.dto.PaymentDto;
 
 public interface PaymentService {
     PaymentDto createPayment(PaymentDto payment);

@@ -1,4 +1,4 @@
-package dev.oleksa.sportshop.dto;
+package dev.oleksa.sportshop.dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,12 +9,13 @@ import lombok.experimental.SuperBuilder;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class AddressDto {
-    private Long id;
+public class AddressRequest {
+    private Long userId;
     private String unitNumber;
     private String streetNumber;
-    private String address;
+    private String addressLine;
     private String city;
     private Long regionId;
     private String postalCode;
+    private Boolean isDefault;
 }

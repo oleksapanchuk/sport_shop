@@ -1,7 +1,9 @@
 package dev.oleksa.sportshop.service.impl;
 
+import dev.oleksa.sportshop.dto.request.AddressRequest;
+import dev.oleksa.sportshop.exception.NotFoundException;
 import dev.oleksa.sportshop.mapper.AddressMapper;
-import dev.oleksa.sportshop.dto.AddressDto;
+import dev.oleksa.sportshop.model.user.address.Address;
 import dev.oleksa.sportshop.repository.AddressRepository;
 import dev.oleksa.sportshop.service.AddressService;
 import lombok.RequiredArgsConstructor;
@@ -9,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -20,34 +23,40 @@ public class AddressServiceImpl implements AddressService {
     private final AddressMapper addressMapper;
 
     @Override
-    public AddressDto createAddress(AddressDto addressDto) {
-        var address = addressMapper.toEntity(addressDto);
-
-        address = addressRepository.save(address);
-
-        return addressMapper.toDto(address);
+    @Transactional
+    public Address readAddress(Long addressId) throws NotFoundException {
+        return addressRepository.findById(addressId)
+                .orElseThrow(() -> new NotFoundException("Address with id " + addressId + " not found"));
     }
 
     @Override
-    public AddressDto readAddress(Long addressId) {
-        return addressMapper.toDto(
-                addressRepository.findById(addressId)
-                        .orElseThrow()
-        );
+    public List<Address> readAddressesForUser(Long userId) throws NotFoundException {
+        return addressRepository.findAllByUserId(userId);
     }
 
     @Override
-    public AddressDto updateAddress(AddressDto addressDto) {
-        var address = addressMapper.toEntity(addressDto);
+    public Address createAddress(AddressRequest addressRequest) {
+        Address address = addressMapper.toEntity(addressRequest).orElseThrow();
 
         address = addressRepository.save(address);
 
-        return addressMapper.toDto(address);
+        return address;
+    }
+
+    @Override
+    public Address updateAddress(Long addressId, AddressRequest addressRequest) {
+        Address address = addressMapper.toEntity(addressRequest).orElseThrow();
+        address.setId(addressId);
+
+        address = addressRepository.save(address);
+
+        return address;
     }
 
     @Override
     public Boolean deleteAddress(Long addressId) {
         try {
+            log.info("Address id to delete: " + addressId);
             addressRepository.deleteById(addressId);
             return true;
         } catch (Exception e) {

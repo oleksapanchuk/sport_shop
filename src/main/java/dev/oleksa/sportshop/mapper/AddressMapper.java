@@ -1,9 +1,10 @@
 package dev.oleksa.sportshop.mapper;
 
 import dev.oleksa.sportshop.exception.NotFoundException;
-import dev.oleksa.sportshop.dto.AddressDto;
+import dev.oleksa.sportshop.dto.request.AddressRequest;
 import dev.oleksa.sportshop.model.user.address.Address;
 import dev.oleksa.sportshop.repository.RegionRepository;
+import dev.oleksa.sportshop.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.Converter;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.util.Objects;
+import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor
@@ -20,45 +22,54 @@ public class AddressMapper {
 
     private final ModelMapper mapper;
     private final RegionRepository regionRepository;
+    private final UserRepository userRepository;
 
-    public Address toEntity(AddressDto dto) {
-        return Objects.isNull(dto) ? null : mapper.map(dto, Address.class);
+    public Optional<Address> toEntity(AddressRequest addressRequest) {
+        return Objects.isNull(addressRequest) ? Optional.empty() : Optional.of(mapper.map(addressRequest, Address.class));
     }
 
-    public AddressDto toDto(Address entity) {
-        return Objects.isNull(entity) ? null : mapper.map(entity, AddressDto.class);
-    }
+//    public AddressRequest toDto(Address entity) {
+//        return Objects.isNull(entity) ? null : mapper.map(entity, AddressRequest.class);
+//    }
 
     @PostConstruct
     public void setupMapper() {
-        mapper.createTypeMap(Address.class, AddressDto.class)
-                .addMappings(m -> m.skip(AddressDto::setRegionId)).setPostConverter(toDtoConverter())
-        ;
-        mapper.createTypeMap(AddressDto.class, Address.class)
+//        mapper.createTypeMap(Address.class, AddressRequest.class)
+//                .addMappings(m -> m.skip(AddressRequest::setUserId)).setPostConverter(toDtoConverter())
+//                .addMappings(m -> m.skip(AddressRequest::setRegionId)).setPostConverter(toDtoConverter())
+//        ;
+        mapper.createTypeMap(AddressRequest.class, Address.class)
+                .addMappings(m -> m.skip(Address::setUser)).setPostConverter(toEntityConverter())
                 .addMappings(m -> m.skip(Address::setRegion)).setPostConverter(toEntityConverter())
         ;
     }
 
-    public Converter<Address, AddressDto> toDtoConverter() {
-        return context -> {
-            Address source = context.getSource();
-            AddressDto destination = context.getDestination();
-            mapSpecificFields(source, destination);
-            return context.getDestination();
-        };
-    }
+//    public Converter<Address, AddressRequest> toDtoConverter() {
+//        return context -> {
+//            Address source = context.getSource();
+//            AddressRequest destination = context.getDestination();
+//            mapSpecificFields(source, destination);
+//            return context.getDestination();
+//        };
+//    }
 
-    public Converter<AddressDto, Address> toEntityConverter() {
+    public Converter<AddressRequest, Address> toEntityConverter() {
         return context -> {
-            AddressDto source = context.getSource();
+            AddressRequest source = context.getSource();
             Address destination = context.getDestination();
             mapSpecificFields(source, destination);
             return context.getDestination();
         };
     }
 
-    public void mapSpecificFields(AddressDto source, Address destination) {
+    public void mapSpecificFields(AddressRequest source, Address destination) {
         try {
+            destination.setUser(
+                    Objects.isNull(source) || Objects.isNull(source.getRegionId())
+                            ? null
+                            : userRepository.findById(source.getUserId())
+                            .orElseThrow(() -> new NotFoundException("User not found"))
+            );
             destination.setRegion(
                     Objects.isNull(source) || Objects.isNull(source.getRegionId())
                             ? null
@@ -70,11 +81,16 @@ public class AddressMapper {
         }
     }
 
-    public void mapSpecificFields(Address source, AddressDto destination) {
-        destination.setRegionId(
-                Objects.isNull(source) || Objects.isNull(source.getId())
-                        ? null
-                        : source.getRegion().getId()
-        );
-    }
+//    public void mapSpecificFields(Address source, AddressRequest destination) {
+//        destination.setUserId(
+//                Objects.isNull(source) || Objects.isNull(source.getUser().getId())
+//                        ? null
+//                        : source.getUser().getId()
+//        );
+//        destination.setRegionId(
+//                Objects.isNull(source) || Objects.isNull(source.getRegion().getId())
+//                        ? null
+//                        : source.getRegion().getId()
+//        );
+//    }
 }

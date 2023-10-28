@@ -1,11 +1,8 @@
 package dev.oleksa.sportshop.service.impl;
 
-import dev.oleksa.sportshop.mapper.UserMapper;
 import dev.oleksa.sportshop.dto.UserDto;
-import dev.oleksa.sportshop.model.user.Role;
+import dev.oleksa.sportshop.mapper.UserMapper;
 import dev.oleksa.sportshop.model.user.UserEntity;
-import dev.oleksa.sportshop.model.user.address.Address;
-import dev.oleksa.sportshop.repository.RoleRepository;
 import dev.oleksa.sportshop.repository.UserRepository;
 import dev.oleksa.sportshop.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -14,13 +11,11 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -29,8 +24,6 @@ import java.util.List;
 public class UserServiceImpl implements UserService, UserDetailsService {
 
     private final UserRepository repository;
-    private final RoleRepository roleRepository;
-    private final PasswordEncoder passwordEncoder;
     private final UserMapper userMapper;
 
     @Override
@@ -39,9 +32,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         log.info("User found! {}", email);
 
         Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
-        user.getRoles().forEach(role -> {
-            authorities.add(new SimpleGrantedAuthority(role.getName()));
-        });
+        user.getRoles().forEach(role -> authorities.add(new SimpleGrantedAuthority(role.getName())));
 
         return new org.springframework.security.core.userdetails.User(
                 user.getEmail(),
@@ -59,64 +50,48 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public UserEntity getUserByEmail(String email) {
-        return repository.findByEmail(email).orElseThrow();
-    }
+    public Boolean updateUser(Long userId, UserDto userDto) {
 
-    @Override
-    public UserEntity createUser(UserDto user) {
-        log.info("Creating and saving new user {} to the database", user.getFirstName() + " " + user.getLastName());
-
-        return repository.save(UserEntity.builder()
-                .firstName(user.getFirstName())
-                .lastName(user.getLastName())
-                .email(user.getEmail())
-                .roles(List.of(roleRepository.findById(user.getRoleIds().get(0)).orElseThrow())) // todo
-                .phone(user.getPhone())
-                .dateOfBirth(user.getDateOfBirth())
-                .build()
+        int countRows = repository.updateUserInfo(
+                userId,
+                userDto.getFirstName(),
+                userDto.getLastName(),
+                userDto.getPhone(),
+                userDto.getDateOfBirth()
         );
+
+        return countRows > 0;
     }
 
     @Override
-    public UserEntity updateUser(UserEntity user) {
+    public Boolean updateAvatar(Long userId, String imageUrl) {
 
-        return null;
+        int countRows = repository.updateUserAvatar(userId, imageUrl);
+
+        return countRows > 0;
     }
 
     @Override
-    public UserEntity addRoleToUser(UserEntity user, Role role) {
-        user.getRoles().add(role);
-        return updateUser(user);
+    public Boolean deleteAvatar(Long userId) {
+        String NO_AVATAR = "https://vyshnevyi-partners.com/wp-content/uploads/2016/12/no-avatar.png";
+
+        int countRows = repository.updateUserAvatar(userId, NO_AVATAR);
+
+        return countRows > 0;
     }
 
     @Override
-    public UserEntity removeRoleFromUser(UserEntity user, Role role) {
-        return null;
+    public Boolean updateGender(Long userId, Long genderId) {
+
+        log.info("User id: " + userId + " Gender id: " + genderId);
+
+        int countRows = repository.updateUserGender(userId, genderId);
+
+        return countRows > 0;
     }
 
     @Override
-    public UserEntity addAvatar(UserEntity user, String filePath) {
-        return null;
-    }
-
-    @Override
-    public UserEntity removeAvatar(UserEntity user) {
-        return null;
-    }
-
-    @Override
-    public UserEntity addAddressToUser(UserEntity user, Address address) {
-        return null;
-    }
-
-    @Override
-    public UserEntity removeAddress(UserEntity user, Address address) {
-        return null;
-    }
-
-    @Override
-    public List<UserEntity> getUsers() {
+    public Boolean updatePassword(Long userId, String oldPassword, String newPassword) {
         return null;
     }
 
