@@ -4,7 +4,13 @@ import dev.oleksa.sportshop.dto.UserDto;
 import dev.oleksa.sportshop.mapper.UserMapper;
 import dev.oleksa.sportshop.model.user.UserEntity;
 import dev.oleksa.sportshop.repository.UserRepository;
+import dev.oleksa.sportshop.security.JwtService;
 import dev.oleksa.sportshop.service.UserService;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.io.Decoders;
+import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -14,14 +20,19 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.security.Key;
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 
 @Service
 @RequiredArgsConstructor
 @Transactional
 @Slf4j
 public class UserServiceImpl implements UserService, UserDetailsService {
+    private static final String SECRET_KEY = "ad1c7f4d0f1fb2e0d07f2eba294ba1746ebac64119ba983caab9b9a2a15f1682";
+    private static final Integer EXPIRATION_TIME = 1000 * 60 * 24;
 
     private final UserRepository repository;
     private final UserMapper userMapper;
@@ -91,8 +102,51 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
+    public Boolean confirmAccount(Long userId) {
+        UserEntity user = repository.findById(userId)
+                .orElseThrow();
+
+        // send confirmation email
+
+        return null;
+    }
+
+    @Override
+    public String generateConfirmationToken(String email) {
+
+        return Jwts
+                .builder()
+                .setSubject(email)
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
+                .signWith(getSignInKey(), SignatureAlgorithm.HS256)
+                .compact();
+    }
+
+    @Override
+    public Boolean verifyConfirmationToken(String token) {
+
+        if (new JwtService().isTokenExpired(token)) {
+            return false;
+        }
+
+        String email = new JwtService().extractEmail(token);
+
+        UserEntity user = repository.findByEmail(email)
+                .orElseThrow();
+
+
+
+        return null;
+    }
+
+    @Override
     public Boolean updatePassword(Long userId, String oldPassword, String newPassword) {
         return null;
     }
 
+    private Key getSignInKey() {
+        byte[] keyBytes = Decoders.BASE64.decode(SECRET_KEY);
+        return Keys.hmacShaKeyFor(keyBytes);
+    }
 }

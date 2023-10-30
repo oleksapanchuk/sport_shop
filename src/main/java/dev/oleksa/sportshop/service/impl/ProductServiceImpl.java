@@ -3,6 +3,8 @@ package dev.oleksa.sportshop.service.impl;
 import dev.oleksa.sportshop.mapper.ProductMapper;
 import dev.oleksa.sportshop.dto.ProductDto;
 import dev.oleksa.sportshop.model.product.Product;
+import dev.oleksa.sportshop.model.product.ProductColor;
+import dev.oleksa.sportshop.repository.ColorRepository;
 import dev.oleksa.sportshop.repository.ProductRepository;
 import dev.oleksa.sportshop.service.ProductService;
 import lombok.RequiredArgsConstructor;
@@ -56,4 +58,6 @@ public class ProductServiceImpl implements ProductService {
             return false;
         }
     }
+
+
 }

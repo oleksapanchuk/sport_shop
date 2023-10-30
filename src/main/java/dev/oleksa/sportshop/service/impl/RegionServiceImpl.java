@@ -1,7 +1,8 @@
 package dev.oleksa.sportshop.service.impl;
 
-import dev.oleksa.sportshop.mapper.RegionMapper;
 import dev.oleksa.sportshop.dto.RegionDto;
+import dev.oleksa.sportshop.mapper.RegionMapper;
+import dev.oleksa.sportshop.model.user.address.Region;
 import dev.oleksa.sportshop.repository.RegionRepository;
 import dev.oleksa.sportshop.service.RegionService;
 import lombok.RequiredArgsConstructor;
@@ -9,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -20,29 +22,28 @@ public class RegionServiceImpl implements RegionService {
     private final RegionMapper regionMapper;
 
     @Override
-    public RegionDto createRegion(RegionDto regionDto) {
-        var region = regionMapper.toEntity(regionDto);
-
-        region = regionRepository.save(region);
-
-        return regionMapper.toDto(region);
+    public List<Region> getAllRegions() {
+        return regionRepository.findAll();
     }
 
     @Override
-    public RegionDto readRegion(Long regionId) {
-        return regionMapper.toDto(
-                regionRepository.findById(regionId)
-                        .orElseThrow()
-        );
+    public Region createRegion(RegionDto regionDto) {
+        var region = regionMapper.toEntity(regionDto);
+        return regionRepository.save(region);
     }
 
     @Override
-    public RegionDto updateRegion(RegionDto regionDto) {
+    public Region getRegionById(Long regionId) {
+        return regionRepository.findById(regionId)
+                .orElseThrow();
+    }
+
+    @Override
+    public Region updateRegion(Long regionId, RegionDto regionDto) {
         var region = regionMapper.toEntity(regionDto);
+        region.setId(regionId);
 
-        region = regionRepository.save(region);
-
-        return regionMapper.toDto(region);
+        return regionRepository.save(region);
     }
 
     @Override

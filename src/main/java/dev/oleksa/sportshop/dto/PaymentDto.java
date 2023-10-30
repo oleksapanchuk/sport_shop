@@ -10,7 +10,6 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @Data
 public class PaymentDto {
-    private Long paymentId;
     private Long userId;
     private String accountNumber;
     private String expiryDate;

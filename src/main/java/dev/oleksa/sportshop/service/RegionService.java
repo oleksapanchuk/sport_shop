@@ -1,13 +1,18 @@
 package dev.oleksa.sportshop.service;
 
 import dev.oleksa.sportshop.dto.RegionDto;
+import dev.oleksa.sportshop.model.user.address.Region;
+
+import java.util.List;
 
 public interface RegionService {
-    RegionDto createRegion(RegionDto regionDto);
+    List<Region> getAllRegions();
 
-    RegionDto readRegion(Long regionId);
+    Region createRegion(RegionDto regionDto);
 
-    RegionDto updateRegion(RegionDto regionDto);
+    Region getRegionById(Long regionId);
+
+    Region updateRegion(Long regionId, RegionDto regionDto);
 
     Boolean deleteRegion(Long regionId);
 }

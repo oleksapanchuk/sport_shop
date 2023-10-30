@@ -13,5 +13,11 @@ public interface UserService {
 
     Boolean updateGender(Long userId, Long genderId);
 
+    Boolean confirmAccount(Long userId);
+
+    String generateConfirmationToken(String email);
+
+    Boolean verifyConfirmationToken(String token);
+
     Boolean updatePassword(Long userId, String oldPassword, String newPassword);
 }

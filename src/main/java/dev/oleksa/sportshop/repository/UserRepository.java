@@ -17,6 +17,8 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
 
     Optional<UserEntity> findById(Long id);
 
+    Boolean existsByEmail(String email);
+
     @Modifying
     @Transactional
     @Query("UPDATE UserEntity u SET u.firstName = :firstName, u.lastName = :lastName, u.phone = :phone, u.dateOfBirth = :dateOfBirth WHERE u.id = :id")
@@ -37,5 +39,10 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
     @Transactional
     @Query("UPDATE UserEntity u SET u.imageUrl= :imageUrl WHERE u.id = :id")
     int updateUserAvatar(@Param("id") Long id, @Param("imageUrl") String imageUrl);
+
+    @Modifying
+    @Transactional
+    @Query("UPDATE UserEntity u SET u.isConfirmed = true WHERE u.email = :emailf")
+    int updateConfirmationStatus(@Param("email") String email);
 
 }

@@ -33,11 +33,9 @@ public class PaymentMapper {
     public void setupMapper() {
         mapper.createTypeMap(PaymentMethod.class, PaymentDto.class)
                 .addMappings(m -> m.skip(PaymentDto::setUserId)).setPostConverter(toDtoConverter())
-                .addMappings(m -> m.map(PaymentMethod::getId, PaymentDto::setPaymentId))
         ;
         mapper.createTypeMap(PaymentDto.class, PaymentMethod.class)
                 .addMappings(m -> m.skip(PaymentMethod::setUser)).setPostConverter(toEntityConverter())
-                .addMappings(m -> m.map(PaymentDto::getPaymentId, PaymentMethod::setId))
         ;
     }
 

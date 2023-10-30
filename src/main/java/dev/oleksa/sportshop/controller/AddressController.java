@@ -4,6 +4,7 @@ import dev.oleksa.sportshop.dto.request.AddressRequest;
 import dev.oleksa.sportshop.exception.NotFoundException;
 import dev.oleksa.sportshop.model.CustomResponse;
 import dev.oleksa.sportshop.service.AddressService;
+import dev.oleksa.sportshop.service.RegionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -24,6 +25,7 @@ import static org.springframework.http.HttpStatus.OK;
 public class AddressController {
 
     private final AddressService addressService;
+    private final RegionService regionService;
 
     @GetMapping("/user/{userId}/address")
     @PreAuthorize("hasRole('ROLE_CUSTOMER')")
@@ -117,4 +119,34 @@ public class AddressController {
                         .build()
         );
     }
+
+    @GetMapping("/address/regions")
+    @PreAuthorize("hasAnyRole('ROLE_CUSTOMER', 'ROLE_MANAGER', 'ROLE_ADMIN')")
+    public ResponseEntity<CustomResponse> getAllRegions() {
+        return ResponseEntity.ok().body(
+                CustomResponse.builder()
+                        .timeStamp(LocalDateTime.now().toString())
+                        .requestMethod(GET)
+                        .statusCode(OK.value())
+                        .message("All regions")
+                        .data(Map.of("regions", regionService.getAllRegions()))
+                        .build()
+        );
+    }
+
+    @GetMapping("/address/region/{regionId}")
+    @PreAuthorize("hasAnyRole('ROLE_CUSTOMER', 'ROLE_MANAGER', 'ROLE_ADMIN')")
+    public ResponseEntity<CustomResponse> getRegionById(
+            @PathVariable Long regionId
+    ) {
+        return ResponseEntity.ok().body(
+                CustomResponse.builder()
+                        .timeStamp(LocalDateTime.now().toString())
+                        .requestMethod(GET)
+                        .statusCode(OK.value())
+                        .data(Map.of("region", regionService.getRegionById(regionId)))
+                        .build()
+        );
+    }
+
 }

@@ -1,5 +1,6 @@
 package dev.oleksa.sportshop.model.product;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -23,6 +24,7 @@ public class Category {
 
     @ManyToOne
     @JoinColumn(name = "parent_category_id")
+    @JsonIgnore
     private Category category;
 
     @NotNull

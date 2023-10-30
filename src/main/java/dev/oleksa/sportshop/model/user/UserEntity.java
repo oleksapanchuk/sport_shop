@@ -2,9 +2,7 @@ package dev.oleksa.sportshop.model.user;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import dev.oleksa.sportshop.model.user.address.Address;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -23,11 +21,12 @@ import java.util.Date;
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_DEFAULT;
 import static javax.persistence.GenerationType.AUTO;
 
-@Data
-@SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonInclude(NON_DEFAULT)
+@SuperBuilder
+@Getter
+@Setter
 @Entity
 @Table(name = "users")
 public class UserEntity implements UserDetails {

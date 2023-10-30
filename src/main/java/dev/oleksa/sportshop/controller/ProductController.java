@@ -1,17 +1,14 @@
 package dev.oleksa.sportshop.controller;
 
-import dev.oleksa.sportshop.dto.BrandDto;
 import dev.oleksa.sportshop.model.CustomResponse;
-import dev.oleksa.sportshop.service.BrandService;
+import dev.oleksa.sportshop.service.ProductAttributeService;
 import dev.oleksa.sportshop.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.net.URI;
 import java.time.LocalDateTime;
 import java.util.Map;
 
@@ -19,11 +16,12 @@ import static dev.oleksa.sportshop.constants.ResponseConstant.GET;
 import static org.springframework.http.HttpStatus.OK;
 
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("/api")
 @RequiredArgsConstructor
 public class ProductController {
 
     private final ProductService productService;
+    private final ProductAttributeService productAttributeService;
 
 
 //    @RequestParam MultiValueMap<String, String> filters
@@ -50,5 +48,116 @@ public class ProductController {
         );
     }
 
+    @GetMapping("/product/colors")
+    @PreAuthorize("hasAnyRole('ROLE_CUSTOMER', 'ROLE_MANAGER', 'ROLE_ADMIN')")
+    public ResponseEntity<CustomResponse> getAllColors() {
 
+        return ResponseEntity.ok().body(
+                CustomResponse.builder()
+                        .timeStamp(LocalDateTime.now().toString())
+                        .requestMethod(GET)
+                        .statusCode(OK.value())
+                        .message("All colors")
+                        .data(Map.of("colors", productAttributeService.getProductColors()))
+                        .build()
+        );
+    }
+
+    @GetMapping("/product/color/{colorId}")
+    @PreAuthorize("hasAnyRole('ROLE_CUSTOMER', 'ROLE_MANAGER', 'ROLE_ADMIN')")
+    public ResponseEntity<CustomResponse> getColorById(
+            @PathVariable Long colorId
+    ) {
+
+        return ResponseEntity.ok().body(
+                CustomResponse.builder()
+                        .timeStamp(LocalDateTime.now().toString())
+                        .requestMethod(GET)
+                        .statusCode(OK.value())
+                        .message("Color id: " + colorId)
+                        .data(Map.of("color", productAttributeService.getProductColor(colorId)))
+                        .build()
+        );
+    }
+
+    @GetMapping("/product/size-types")
+    @PreAuthorize("hasAnyRole('ROLE_CUSTOMER', 'ROLE_MANAGER', 'ROLE_ADMIN')")
+    public ResponseEntity<CustomResponse> getSizeTypes() {
+
+        return ResponseEntity.ok().body(
+                CustomResponse.builder()
+                        .timeStamp(LocalDateTime.now().toString())
+                        .requestMethod(GET)
+                        .statusCode(OK.value())
+                        .message("All size types")
+                        .data(Map.of("size-types", productAttributeService.getProductSizeTypes()))
+                        .build()
+        );
+    }
+
+    @GetMapping("/product/size-type/{sizeTypeId}")
+    @PreAuthorize("hasAnyRole('ROLE_CUSTOMER', 'ROLE_MANAGER', 'ROLE_ADMIN')")
+    public ResponseEntity<CustomResponse> getSizeTypeIdById(
+            @PathVariable Long sizeTypeId
+    ) {
+
+        return ResponseEntity.ok().body(
+                CustomResponse.builder()
+                        .timeStamp(LocalDateTime.now().toString())
+                        .requestMethod(GET)
+                        .statusCode(OK.value())
+                        .message("Size Type id: " + sizeTypeId)
+                        .data(Map.of("size-types", productAttributeService.getProductSizeType(sizeTypeId)))
+                        .build()
+        );
+    }
+
+    @GetMapping("/product/all-sizes")
+    @PreAuthorize("hasAnyRole('ROLE_CUSTOMER', 'ROLE_MANAGER', 'ROLE_ADMIN')")
+    public ResponseEntity<CustomResponse> getAllSizes() {
+
+        return ResponseEntity.ok().body(
+                CustomResponse.builder()
+                        .timeStamp(LocalDateTime.now().toString())
+                        .requestMethod(GET)
+                        .statusCode(OK.value())
+                        .message("All sizes")
+                        .data(Map.of("sizes", productAttributeService.getAllProductSizes()))
+                        .build()
+        );
+    }
+
+    @GetMapping("/product/sizes/{sizeTypeId}")
+    @PreAuthorize("hasAnyRole('ROLE_CUSTOMER', 'ROLE_MANAGER', 'ROLE_ADMIN')")
+    public ResponseEntity<CustomResponse> getAllSizes(
+            @PathVariable Long sizeTypeId
+    ) {
+
+        return ResponseEntity.ok().body(
+                CustomResponse.builder()
+                        .timeStamp(LocalDateTime.now().toString())
+                        .requestMethod(GET)
+                        .statusCode(OK.value())
+                        .message("All sizes by type id: " + sizeTypeId)
+                        .data(Map.of("sizes", productAttributeService.getProductSizesByTypeId(sizeTypeId)))
+                        .build()
+        );
+    }
+
+    @GetMapping("/product/size/{sizeId}")
+    @PreAuthorize("hasAnyRole('ROLE_CUSTOMER', 'ROLE_MANAGER', 'ROLE_ADMIN')")
+    public ResponseEntity<CustomResponse> getSizeById(
+            @PathVariable Long sizeId
+    ) {
+
+        return ResponseEntity.ok().body(
+                CustomResponse.builder()
+                        .timeStamp(LocalDateTime.now().toString())
+                        .requestMethod(GET)
+                        .statusCode(OK.value())
+                        .message("Size Type id: " + sizeId)
+                        .data(Map.of("size-types", productAttributeService.getProductSize(sizeId)))
+                        .build()
+        );
+    }
 }

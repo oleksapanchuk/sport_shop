@@ -1,13 +1,20 @@
 package dev.oleksa.sportshop.service;
 
 import dev.oleksa.sportshop.dto.CategoryDto;
+import dev.oleksa.sportshop.model.product.Category;
+
+import java.util.List;
 
 public interface CategoryService {
-    CategoryDto createCategory(CategoryDto categoryDto);
+    List<Category> getAllCategories();
 
-    CategoryDto readCategory(Long categoryId);
+    List<Category> getCategoriesByParentId(Long parentCategoryId);
 
-    CategoryDto updateCategory(CategoryDto categoryDto);
+    Category getCategoryById(Long categoryId);
+
+    Category createCategory(CategoryDto categoryDto);
+
+    Category updateCategory(Long categoryId, CategoryDto categoryDto);
 
     Boolean deleteCategory(Long categoryId);
 }

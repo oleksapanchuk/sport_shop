@@ -1,7 +1,7 @@
 package dev.oleksa.sportshop.service.impl;
 
-import dev.oleksa.sportshop.mapper.PaymentMapper;
 import dev.oleksa.sportshop.dto.PaymentDto;
+import dev.oleksa.sportshop.mapper.PaymentMapper;
 import dev.oleksa.sportshop.model.payment.PaymentMethod;
 import dev.oleksa.sportshop.repository.PaymentRepository;
 import dev.oleksa.sportshop.service.PaymentService;
@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -21,29 +22,38 @@ public class PaymentServiceImpl implements PaymentService {
     private final PaymentMapper paymentMapper;
 
     @Override
-    public PaymentDto createPayment(PaymentDto paymentDto) {
+    public List<PaymentMethod> getAllPaymentMethods(Long userId) {
+        return paymentRepository.findAllByUserId(userId);
+    }
+
+    @Override
+    public PaymentMethod createPayment(PaymentDto paymentDto) {
         PaymentMethod payment = paymentMapper.toEntity(paymentDto);
-        PaymentMethod createdPayment = paymentRepository.save(payment);
-        return paymentMapper.toDto(createdPayment);
+        return paymentRepository.save(payment);
     }
 
     @Override
-    public PaymentDto readPayment(Long id) {
-        return paymentMapper.toDto(
-                paymentRepository.findById(id)
-                .orElseThrow()
-        );
+    public PaymentMethod readPayment(Long paymentId) {
+        return paymentRepository.findById(paymentId)
+                .orElseThrow();
     }
 
     @Override
-    public PaymentDto updatePayment(PaymentDto payment, Long id) {
+    public PaymentMethod updatePayment(Long paymentId, PaymentDto payment) {
         PaymentMethod paymentMethod = paymentMapper.toEntity(payment);
-        return paymentMapper.toDto(paymentRepository.save(paymentMethod));
+        paymentMethod.setId(paymentId);
+        return paymentRepository.save(paymentMethod);
     }
 
     @Override
-    public Boolean deletePayment(Long id) {
-        paymentRepository.deleteById(id);
-        return true;
+    public Boolean deletePayment(Long paymentId) {
+        try {
+            paymentRepository.deleteById(paymentId);
+            return true;
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            return false;
+        }
     }
+
 }

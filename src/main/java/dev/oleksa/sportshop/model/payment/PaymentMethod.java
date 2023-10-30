@@ -1,5 +1,6 @@
 package dev.oleksa.sportshop.model.payment;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import dev.oleksa.sportshop.model.user.UserEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -25,6 +26,7 @@ public class PaymentMethod {
     @NotNull
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
+    @JsonIgnore
     private UserEntity user;
 
     @NotNull
