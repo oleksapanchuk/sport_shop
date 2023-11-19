@@ -17,6 +17,22 @@ public class EmailServiceImpl implements EmailService {
     private final JavaMailSender emailSender;
 
     @Override
+    public void sendConfirmationEmail(String to, String token) {
+        try {
+            SimpleMailMessage message = new SimpleMailMessage();
+            message.setSubject("Confirm your account");
+            message.setFrom(from);
+            message.setTo(to);
+            message.setText("Confirm your account by clicking on the link below: \n" +
+                    "http://localhost:8080/sport-shop/auth/confirm-account?token=" + token);
+            emailSender.send(message);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
     public void sendSimpleMessage(String to, String subject, String text) {
         try {
             SimpleMailMessage message = new SimpleMailMessage();

@@ -8,6 +8,8 @@ import dev.oleksa.sportshop.repository.GenderRepository;
 import dev.oleksa.sportshop.repository.RoleRepository;
 import dev.oleksa.sportshop.repository.UserRepository;
 import dev.oleksa.sportshop.security.JwtService;
+import dev.oleksa.sportshop.service.EmailService;
+import dev.oleksa.sportshop.service.UserService;
 import dev.oleksa.sportshop.utils.DataUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -44,11 +46,12 @@ public class AuthenticationService {
     public static final String BEARER = "Bearer ";
     public static final String AUTHORIZATION_HEADER = "Authorization";
 
-    private final UserRepository repository;
+    private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
+    private final UserService userService;
     private final UserDetailsService userDetailsService;
     private final GenderRepository genderRepository;
 
@@ -88,7 +91,7 @@ public class AuthenticationService {
                     .build();
         }
 
-        repository.save(user);
+        userRepository.save(user);
         var jwt = jwtService.generateToken(user);
         return AuthenticationResponse.builder()
                 .token(jwt)
@@ -103,7 +106,7 @@ public class AuthenticationService {
                 )
         );
 
-        var user = repository.findByEmail(request.getEmail())
+        var user = userRepository.findByEmail(request.getEmail())
                 .orElseThrow();
 
         var jwt = jwtService.generateToken(user);
@@ -149,5 +152,14 @@ public class AuthenticationService {
             new ObjectMapper().writeValue(response.getOutputStream(), error);
 
         }
+    }
+
+    public Boolean confirmUserAccount(String token) {
+        String email = jwtService.extractEmail(token);
+        log.info("Email from token: {}", email);
+        var user = userService.getUserByEmail(email);
+        user.setIsConfirmed(true);
+        userRepository.save(user);
+        return true;
     }
 }

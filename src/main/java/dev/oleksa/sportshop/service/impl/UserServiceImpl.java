@@ -53,6 +53,12 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
+    public UserEntity getUserByEmail(String email) {
+        return repository.findByEmail(email)
+                .orElseThrow();
+    }
+
+    @Override
     public UserDto getUserById(Long id) {
         return userMapper.toDto(
                 repository.findById(id)

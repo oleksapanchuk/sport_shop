@@ -38,4 +38,9 @@ public class AuthenticationController {
         service.refreshToken(request, response);
     }
 
+    @PostMapping("/confirm-account")
+    public ResponseEntity<Boolean> confirmAccount(@RequestParam String token) {
+        return ResponseEntity.ok(service.confirmUserAccount(token));
+    }
+
 }
