@@ -1,6 +1,6 @@
 package dev.oleksa.sportshop.controller;
 
-import dev.oleksa.sportshop.model.CustomResponse;
+import dev.oleksa.sportshop.model.product.Category;
 import dev.oleksa.sportshop.service.CategoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -10,11 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.time.LocalDateTime;
-import java.util.Map;
-
-import static dev.oleksa.sportshop.constants.ResponseConstant.GET;
-import static org.springframework.http.HttpStatus.OK;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api")
@@ -25,51 +21,27 @@ public class CategoryController {
 
     @GetMapping("/product/all-categories")
     @PreAuthorize("hasAnyRole('ROLE_CUSTOMER', 'ROLE_MANAGER', 'ROLE_ADMIN')")
-    public ResponseEntity<CustomResponse> getAllCategories() {
+    public ResponseEntity<List<Category>> getAllCategories() {
 
-        return ResponseEntity.ok().body(
-                CustomResponse.builder()
-                        .timeStamp(LocalDateTime.now().toString())
-                        .requestMethod(GET)
-                        .statusCode(OK.value())
-                        .message("All categories")
-                        .data(Map.of("categories", categoryService.getAllCategories()))
-                        .build()
-        );
+        return ResponseEntity.ok().body(categoryService.getAllCategories());
     }
 
     @GetMapping("/product/categories/{parentCategoryId}")
     @PreAuthorize("hasAnyRole('ROLE_CUSTOMER', 'ROLE_MANAGER', 'ROLE_ADMIN')")
-    public ResponseEntity<CustomResponse> getCategoriesByParentId(
+    public ResponseEntity<List<Category>> getCategoriesByParentId(
             @PathVariable Long parentCategoryId
     ) {
 
-        return ResponseEntity.ok().body(
-                CustomResponse.builder()
-                        .timeStamp(LocalDateTime.now().toString())
-                        .requestMethod(GET)
-                        .statusCode(OK.value())
-                        .message("All categories by parent category id: " + parentCategoryId)
-                        .data(Map.of("categories", categoryService.getCategoriesByParentId(parentCategoryId)))
-                        .build()
-        );
+        return ResponseEntity.ok().body(categoryService.getCategoriesByParentId(parentCategoryId));
     }
 
     @GetMapping("/product/category/{categoryId}")
     @PreAuthorize("hasAnyRole('ROLE_CUSTOMER', 'ROLE_MANAGER', 'ROLE_ADMIN')")
-    public ResponseEntity<CustomResponse> getCategoryById(
+    public ResponseEntity<Category> getCategoryById(
             @PathVariable Long categoryId
     ) {
 
-        return ResponseEntity.ok().body(
-                CustomResponse.builder()
-                        .timeStamp(LocalDateTime.now().toString())
-                        .requestMethod(GET)
-                        .statusCode(OK.value())
-                        .message("Category id: " + categoryId)
-                        .data(Map.of("category", categoryService.getCategoryById(categoryId)))
-                        .build()
-        );
+        return ResponseEntity.ok().body(categoryService.getCategoryById(categoryId));
     }
 
 }

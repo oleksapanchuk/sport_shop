@@ -1,7 +1,7 @@
 package dev.oleksa.sportshop.controller;
 
 import dev.oleksa.sportshop.dto.PaymentDto;
-import dev.oleksa.sportshop.model.CustomResponse;
+import dev.oleksa.sportshop.model.payment.PaymentMethod;
 import dev.oleksa.sportshop.service.PaymentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -10,12 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
-import java.time.LocalDateTime;
-import java.util.Map;
-
-import static dev.oleksa.sportshop.constants.ResponseConstant.*;
-import static org.springframework.http.HttpStatus.CREATED;
-import static org.springframework.http.HttpStatus.OK;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api")
@@ -26,94 +21,54 @@ public class PaymentMethodController {
 
     @GetMapping("/user/{userId}/payment-methods")
     @PreAuthorize("hasRole('ROLE_CUSTOMER')")
-    public ResponseEntity<CustomResponse> getPaymentMethodsForUser(
+    public ResponseEntity<List<PaymentMethod>> getPaymentMethodsForUser(
             @PathVariable Long userId
     ) {
 
-        return ResponseEntity.ok().body(
-                CustomResponse.builder()
-                        .timeStamp(LocalDateTime.now().toString())
-                        .requestMethod(GET)
-                        .statusCode(OK.value())
-                        .message("All payment methods. User id: " + userId)
-                        .data(Map.of("payment-methods", paymentService.getAllPaymentMethods(userId)))
-                        .build()
-        );
+        return ResponseEntity.ok().body(paymentService.getAllPaymentMethods(userId));
     }
 
     @GetMapping("/user/{userId}/payment-method/{paymentMethodId}")
     @PreAuthorize("hasRole('ROLE_CUSTOMER')")
-    public ResponseEntity<CustomResponse> getPaymentMethod(
+    public ResponseEntity<PaymentMethod> getPaymentMethod(
             @PathVariable Long userId,
             @PathVariable Long paymentMethodId
     ) {
 
-        return ResponseEntity.ok().body(
-                CustomResponse.builder()
-                        .timeStamp(LocalDateTime.now().toString())
-                        .requestMethod(GET)
-                        .statusCode(OK.value())
-                        .data(Map.of("payment-method", paymentService.readPayment(paymentMethodId)))
-                        .build()
-        );
+        return ResponseEntity.ok().body(paymentService.readPayment(paymentMethodId));
     }
 
     @PostMapping("/user/{userId}/payment-method")
     @PreAuthorize("hasRole('ROLE_CUSTOMER')")
-    public ResponseEntity<CustomResponse> addPaymentMethod(
+    public ResponseEntity<PaymentMethod> createPaymentMethod(
             @PathVariable Long userId,
             @RequestBody PaymentDto paymentDto
     ) {
         URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path(String.format("/api/user/{%d}/payment-method", userId)).toUriString());
 
-        return ResponseEntity.created(uri).body(
-                CustomResponse.builder()
-                        .timeStamp(LocalDateTime.now().toString())
-                        .path(uri.getPath())
-                        .requestMethod(POST)
-                        .statusCode(CREATED.value())
-                        .message("Payment Method added")
-                        .data(Map.of("payment-method", paymentService.createPayment(paymentDto)))
-                        .build()
-        );
+        return ResponseEntity.created(uri).body(paymentService.createPayment(paymentDto));
     }
 
     @PutMapping("/user/{userId}/payment-method/{paymentMethodId}")
     @PreAuthorize("hasRole('ROLE_CUSTOMER')")
-    public ResponseEntity<CustomResponse> updatePaymentMethod(
+    public ResponseEntity<PaymentMethod> updatePaymentMethod(
             @PathVariable Long userId,
             @PathVariable Long paymentMethodId,
             @RequestBody PaymentDto paymentDto
     ) {
 
-        return ResponseEntity.ok().body(
-                CustomResponse.builder()
-                        .timeStamp(LocalDateTime.now().toString())
-                        .requestMethod(PUT)
-                        .statusCode(OK.value())
-                        .message("Updated payment method id:" + paymentMethodId)
-                        .data(Map.of("payment-method", paymentService.updatePayment(paymentMethodId, paymentDto)))
-                        .build()
-        );
+        return ResponseEntity.accepted().body(paymentService.updatePayment(paymentMethodId, paymentDto));
     }
 
     @DeleteMapping("/user/{userId}/payment-method/{paymentMethodId}")
     @PreAuthorize("hasRole('ROLE_CUSTOMER')")
-    public ResponseEntity<CustomResponse> deletePaymentMethod(
+    public ResponseEntity<Boolean> deletePaymentMethod(
             @PathVariable Long userId,
             @PathVariable Long paymentMethodId
     ) {
 
-        return ResponseEntity.ok().body(
-                CustomResponse.builder()
-                        .timeStamp(LocalDateTime.now().toString())
-                        .requestMethod(DELETE)
-                        .statusCode(OK.value())
-                        .message("Payment Method id: " + paymentMethodId + " deleted")
-                        .data(Map.of("is_deleted", paymentService.deletePayment(paymentMethodId)))
-                        .build()
-        );
+        return ResponseEntity.accepted().body(paymentService.deletePayment(paymentMethodId));
     }
 
 }

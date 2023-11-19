@@ -1,19 +1,20 @@
 package dev.oleksa.sportshop.controller;
 
-import dev.oleksa.sportshop.model.CustomResponse;
+import dev.oleksa.sportshop.dto.ProductDto;
+import dev.oleksa.sportshop.dto.response.ProductResponse;
+import dev.oleksa.sportshop.model.product.Product;
+import dev.oleksa.sportshop.model.product.ProductColor;
+import dev.oleksa.sportshop.model.product.ProductSize;
+import dev.oleksa.sportshop.model.product.ProductSizeType;
 import dev.oleksa.sportshop.service.ProductAttributeService;
 import dev.oleksa.sportshop.service.ProductService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.time.LocalDateTime;
-import java.util.Map;
-
-import static dev.oleksa.sportshop.constants.ResponseConstant.GET;
-import static org.springframework.http.HttpStatus.OK;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api")
@@ -28,136 +29,83 @@ public class ProductController {
 
     @GetMapping("/products")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_CUSTOMER')")
-    public ResponseEntity<CustomResponse> findAllProduct(
+    public ResponseEntity<Page<Product>> findAllProduct(
             @RequestParam int page,
             @RequestParam int size
     ) {
-        return ResponseEntity.ok().body(
-                CustomResponse.builder()
-                        .timeStamp(LocalDateTime.now().toString())
-                        .path(ServletUriComponentsBuilder.fromCurrentContextPath()
-                                .path(String.format("/api/v1/products/page=%d&size=%d", page, size))
-                                .toUriString()
-                        )
-                        .requestMethod(GET)
-                        .status(OK)
-                        .statusCode(OK.value())
-                        .message("Page № " + page + " size = " + size)
-                        .data(Map.of("products", productService.getProducts(page, size, null, null)))
-                        .build()
-        );
+        return ResponseEntity.ok().body(productService.getProducts(page, size, null, null));
+    }
+
+    @GetMapping("/products/{productId}")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_CUSTOMER')")
+    public ResponseEntity<ProductDto> findProductById(
+            @PathVariable Long productId
+    ) {
+        return ResponseEntity.ok().body(productService.readProduct(productId));
+    }
+
+    @GetMapping("/products/details/{productId}")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_CUSTOMER')")
+    public ResponseEntity<ProductResponse> getProductDetails(
+            @PathVariable Long productId
+    ) {
+        return ResponseEntity.ok().body(productService.getProductDetailsById(productId, "ua"));
     }
 
     @GetMapping("/product/colors")
     @PreAuthorize("hasAnyRole('ROLE_CUSTOMER', 'ROLE_MANAGER', 'ROLE_ADMIN')")
-    public ResponseEntity<CustomResponse> getAllColors() {
+    public ResponseEntity<List<ProductColor>> getAllColors() {
 
-        return ResponseEntity.ok().body(
-                CustomResponse.builder()
-                        .timeStamp(LocalDateTime.now().toString())
-                        .requestMethod(GET)
-                        .statusCode(OK.value())
-                        .message("All colors")
-                        .data(Map.of("colors", productAttributeService.getProductColors()))
-                        .build()
-        );
+        return ResponseEntity.ok().body(productAttributeService.getProductColors());
     }
 
     @GetMapping("/product/color/{colorId}")
     @PreAuthorize("hasAnyRole('ROLE_CUSTOMER', 'ROLE_MANAGER', 'ROLE_ADMIN')")
-    public ResponseEntity<CustomResponse> getColorById(
+    public ResponseEntity<ProductColor> getColorById(
             @PathVariable Long colorId
     ) {
 
-        return ResponseEntity.ok().body(
-                CustomResponse.builder()
-                        .timeStamp(LocalDateTime.now().toString())
-                        .requestMethod(GET)
-                        .statusCode(OK.value())
-                        .message("Color id: " + colorId)
-                        .data(Map.of("color", productAttributeService.getProductColor(colorId)))
-                        .build()
-        );
+        return ResponseEntity.ok().body(productAttributeService.getProductColor(colorId));
     }
 
     @GetMapping("/product/size-types")
     @PreAuthorize("hasAnyRole('ROLE_CUSTOMER', 'ROLE_MANAGER', 'ROLE_ADMIN')")
-    public ResponseEntity<CustomResponse> getSizeTypes() {
+    public ResponseEntity<List<ProductSizeType>> getSizeTypes() {
 
-        return ResponseEntity.ok().body(
-                CustomResponse.builder()
-                        .timeStamp(LocalDateTime.now().toString())
-                        .requestMethod(GET)
-                        .statusCode(OK.value())
-                        .message("All size types")
-                        .data(Map.of("size-types", productAttributeService.getProductSizeTypes()))
-                        .build()
-        );
+        return ResponseEntity.ok().body(productAttributeService.getProductSizeTypes());
     }
 
     @GetMapping("/product/size-type/{sizeTypeId}")
     @PreAuthorize("hasAnyRole('ROLE_CUSTOMER', 'ROLE_MANAGER', 'ROLE_ADMIN')")
-    public ResponseEntity<CustomResponse> getSizeTypeIdById(
+    public ResponseEntity<ProductSizeType> getSizeTypeIdById(
             @PathVariable Long sizeTypeId
     ) {
 
-        return ResponseEntity.ok().body(
-                CustomResponse.builder()
-                        .timeStamp(LocalDateTime.now().toString())
-                        .requestMethod(GET)
-                        .statusCode(OK.value())
-                        .message("Size Type id: " + sizeTypeId)
-                        .data(Map.of("size-types", productAttributeService.getProductSizeType(sizeTypeId)))
-                        .build()
-        );
+        return ResponseEntity.ok().body(productAttributeService.getProductSizeType(sizeTypeId));
     }
 
     @GetMapping("/product/all-sizes")
     @PreAuthorize("hasAnyRole('ROLE_CUSTOMER', 'ROLE_MANAGER', 'ROLE_ADMIN')")
-    public ResponseEntity<CustomResponse> getAllSizes() {
+    public ResponseEntity<List<ProductSize>> getAllSizes() {
 
-        return ResponseEntity.ok().body(
-                CustomResponse.builder()
-                        .timeStamp(LocalDateTime.now().toString())
-                        .requestMethod(GET)
-                        .statusCode(OK.value())
-                        .message("All sizes")
-                        .data(Map.of("sizes", productAttributeService.getAllProductSizes()))
-                        .build()
-        );
+        return ResponseEntity.ok().body(productAttributeService.getAllProductSizes());
     }
 
     @GetMapping("/product/sizes/{sizeTypeId}")
     @PreAuthorize("hasAnyRole('ROLE_CUSTOMER', 'ROLE_MANAGER', 'ROLE_ADMIN')")
-    public ResponseEntity<CustomResponse> getAllSizes(
+    public ResponseEntity<List<ProductSize>> getAllSizes(
             @PathVariable Long sizeTypeId
     ) {
 
-        return ResponseEntity.ok().body(
-                CustomResponse.builder()
-                        .timeStamp(LocalDateTime.now().toString())
-                        .requestMethod(GET)
-                        .statusCode(OK.value())
-                        .message("All sizes by type id: " + sizeTypeId)
-                        .data(Map.of("sizes", productAttributeService.getProductSizesByTypeId(sizeTypeId)))
-                        .build()
-        );
+        return ResponseEntity.ok().body(productAttributeService.getProductSizesByTypeId(sizeTypeId));
     }
 
     @GetMapping("/product/size/{sizeId}")
     @PreAuthorize("hasAnyRole('ROLE_CUSTOMER', 'ROLE_MANAGER', 'ROLE_ADMIN')")
-    public ResponseEntity<CustomResponse> getSizeById(
+    public ResponseEntity<ProductSize> getSizeById(
             @PathVariable Long sizeId
     ) {
 
-        return ResponseEntity.ok().body(
-                CustomResponse.builder()
-                        .timeStamp(LocalDateTime.now().toString())
-                        .requestMethod(GET)
-                        .statusCode(OK.value())
-                        .message("Size Type id: " + sizeId)
-                        .data(Map.of("size-types", productAttributeService.getProductSize(sizeId)))
-                        .build()
-        );
+        return ResponseEntity.ok().body(productAttributeService.getProductSize(sizeId));
     }
 }

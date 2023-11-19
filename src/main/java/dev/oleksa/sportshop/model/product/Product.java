@@ -1,5 +1,6 @@
 package dev.oleksa.sportshop.model.product;
 
+import dev.oleksa.sportshop.dto.ProductDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,6 +18,30 @@ import static javax.persistence.GenerationType.AUTO;
 @NoArgsConstructor
 @AllArgsConstructor
 @SuperBuilder
+@NamedNativeQuery(
+        name = "Product.findProductById_Named",
+        query = "SELECT p.id, p.name_ua, p.name_eng, p.category_id, p.description_ua, p.description_eng, p.image_url, p.brand_id, p.price, p.likes_number, p.rating FROM Product p WHERE p.id = :id",
+        resultSetMapping = "Mapping.ProductDto"
+)
+@SqlResultSetMapping(
+        name = "Mapping.ProductDto",
+        classes = @ConstructorResult(
+                targetClass = ProductDto.class,
+                columns = {
+                        @ColumnResult(name = "id", type = Long.class),
+                        @ColumnResult(name = "name_ua"),
+                        @ColumnResult(name = "name_eng"),
+                        @ColumnResult(name = "category_id", type = Long.class),
+                        @ColumnResult(name = "description_ua"),
+                        @ColumnResult(name = "description_eng"),
+                        @ColumnResult(name = "image_url"),
+                        @ColumnResult(name = "brand_id", type = Long.class),
+                        @ColumnResult(name = "price", type = BigDecimal.class),
+                        @ColumnResult(name = "likes_number", type = Integer.class),
+                        @ColumnResult(name = "rating", type = BigDecimal.class)
+                }
+        )
+)
 @Entity
 public class Product {
     @Id

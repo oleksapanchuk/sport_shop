@@ -8,6 +8,8 @@ import lombok.experimental.SuperBuilder;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
+import java.util.List;
+
 import static javax.persistence.GenerationType.AUTO;
 
 @Data
@@ -28,21 +30,8 @@ public class ProductItem {
 
     @NotNull
     @ManyToOne
-    @JoinColumn(name = "size_id", nullable = false)
-    private ProductSize size;
-
-    @NotNull
-    @ManyToOne
     @JoinColumn(name = "color_id", nullable = false)
     private ProductColor color;
-
-    @NotNull
-    @Column(name = "sku", nullable = false)
-    private String sku;
-
-    @NotNull
-    @Column(name = "quantity_in_stock", nullable = false)
-    private Integer quantityInStock;
 
     @NotNull
     @Column(name = "image_url", nullable = false, length = 1000)

@@ -5,7 +5,6 @@ import dev.oleksa.sportshop.exception.NotFoundException;
 import dev.oleksa.sportshop.model.product.Product;
 import dev.oleksa.sportshop.repository.BrandRepository;
 import dev.oleksa.sportshop.repository.CategoryRepository;
-import dev.oleksa.sportshop.repository.DiscountRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.Converter;
@@ -21,7 +20,6 @@ import java.util.Objects;
 public class ProductMapper {
 
     private final ModelMapper mapper;
-    private final DiscountRepository discountRepository;
     private final CategoryRepository categoryRepository;
     private final BrandRepository brandRepository;
 
@@ -36,7 +34,6 @@ public class ProductMapper {
     @PostConstruct
     public void setupMapper() {
         mapper.createTypeMap(Product.class, ProductDto.class)
-                .addMappings(m -> m.skip(ProductDto::setDiscountId)).setPostConverter(toDtoConverter())
                 .addMappings(m -> m.skip(ProductDto::setCategoryId)).setPostConverter(toDtoConverter())
                 .addMappings(m -> m.skip(ProductDto::setBrandId)).setPostConverter(toDtoConverter())
         ;

@@ -43,7 +43,6 @@ public class ProductItemMapper {
         ;
         mapper.createTypeMap(ProductItemDto.class, ProductItem.class)
                 .addMappings(m -> m.skip(ProductItem::setProduct)).setPostConverter(toEntityConverter())
-                .addMappings(m -> m.skip(ProductItem::setSize)).setPostConverter(toEntityConverter())
                 .addMappings(m -> m.skip(ProductItem::setColor)).setPostConverter(toEntityConverter())
         ;
     }
@@ -74,12 +73,7 @@ public class ProductItemMapper {
                             : productRepository.findById(source.getProductId())
                             .orElseThrow(() -> new NotFoundException("Product not found"))
             );
-            destination.setSize(
-                    Objects.isNull(source) || Objects.isNull(source.getSizeId())
-                            ? null
-                            : sizeRepository.findById(source.getSizeId())
-                            .orElseThrow(() -> new NotFoundException("Size not found"))
-            );
+
             destination.setColor(
                     Objects.isNull(source) || Objects.isNull(source.getColorId())
                             ? null
@@ -97,11 +91,7 @@ public class ProductItemMapper {
                         ? null
                         : source.getProduct().getId()
         );
-        destination.setSizeId(
-                Objects.isNull(source) || Objects.isNull(source.getId())
-                        ? null
-                        : source.getSize().getId()
-        );
+
         destination.setColorId(
                 Objects.isNull(source) || Objects.isNull(source.getId())
                         ? null

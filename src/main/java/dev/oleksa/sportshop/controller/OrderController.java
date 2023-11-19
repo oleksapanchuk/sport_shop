@@ -1,6 +1,7 @@
 package dev.oleksa.sportshop.controller;
 
-import dev.oleksa.sportshop.model.CustomResponse;
+import dev.oleksa.sportshop.model.order.OrderStatus;
+import dev.oleksa.sportshop.model.order.ShippingMethod;
 import dev.oleksa.sportshop.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -10,11 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.time.LocalDateTime;
-import java.util.Map;
-
-import static dev.oleksa.sportshop.constants.ResponseConstant.GET;
-import static org.springframework.http.HttpStatus.OK;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api")
@@ -26,66 +23,34 @@ public class OrderController {
 
     @GetMapping("/order/statuses")
     @PreAuthorize("hasAnyRole('ROLE_CUSTOMER', 'ROLE_MANAGER', 'ROLE_ADMIN')")
-    public ResponseEntity<CustomResponse> getOrderStatuses() {
+    public ResponseEntity<List<OrderStatus>> getOrderStatuses() {
 
-        return ResponseEntity.ok().body(
-                CustomResponse.builder()
-                        .timeStamp(LocalDateTime.now().toString())
-                        .requestMethod(GET)
-                        .statusCode(OK.value())
-                        .message("All order statuses")
-                        .data(Map.of("order-statuses", orderService.getOrderStatuses()))
-                        .build()
-        );
+        return ResponseEntity.ok().body(orderService.getOrderStatuses());
     }
 
     @GetMapping("/order/status/{orderStatusId}")
     @PreAuthorize("hasAnyRole('ROLE_CUSTOMER', 'ROLE_MANAGER', 'ROLE_ADMIN')")
-    public ResponseEntity<CustomResponse> getOrderStatus(
+    public ResponseEntity<OrderStatus> getOrderStatus(
             @PathVariable Long orderStatusId
     ) {
 
-        return ResponseEntity.ok().body(
-                CustomResponse.builder()
-                        .timeStamp(LocalDateTime.now().toString())
-                        .requestMethod(GET)
-                        .statusCode(OK.value())
-                        .message("Order status id: " + orderStatusId)
-                        .data(Map.of("order", orderService.getOrderStatus(orderStatusId)))
-                        .build()
-        );
+        return ResponseEntity.ok().body(orderService.getOrderStatus(orderStatusId));
     }
 
     @GetMapping("/order/shipping-methods")
     @PreAuthorize("hasAnyRole('ROLE_CUSTOMER', 'ROLE_MANAGER', 'ROLE_ADMIN')")
-    public ResponseEntity<CustomResponse> getShippingMethods() {
+    public ResponseEntity<List<ShippingMethod>> getShippingMethods() {
 
-        return ResponseEntity.ok().body(
-                CustomResponse.builder()
-                        .timeStamp(LocalDateTime.now().toString())
-                        .requestMethod(GET)
-                        .statusCode(OK.value())
-                        .message("All order shipping methods")
-                        .data(Map.of("shipping-methods", orderService.getShippingMethods()))
-                        .build()
-        );
+        return ResponseEntity.ok().body(orderService.getShippingMethods());
     }
 
     @GetMapping("/order/shipping-method/{shippingMethodId}")
     @PreAuthorize("hasAnyRole('ROLE_CUSTOMER', 'ROLE_MANAGER', 'ROLE_ADMIN')")
-    public ResponseEntity<CustomResponse> getShippingMethod(
+    public ResponseEntity<ShippingMethod> getShippingMethod(
             @PathVariable Long shippingMethodId
     ) {
 
-        return ResponseEntity.ok().body(
-                CustomResponse.builder()
-                        .timeStamp(LocalDateTime.now().toString())
-                        .requestMethod(GET)
-                        .statusCode(OK.value())
-                        .message("Shipping Method id: " + shippingMethodId)
-                        .data(Map.of("order", orderService.getShippingMethod(shippingMethodId)))
-                        .build()
-        );
+        return ResponseEntity.ok().body(orderService.getShippingMethod(shippingMethodId));
     }
 
 }
